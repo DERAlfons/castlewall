@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+
 import { Puzzle } from '../puzzle';
+import { PuzzleService } from '../puzzle.service';
+import { MessagesService } from '../messages.service';
 
 @Component({
   selector: 'app-puzzles',
@@ -8,15 +11,28 @@ import { Puzzle } from '../puzzle';
 })
 export class PuzzlesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private puzzleService: PuzzleService, private messagesService: MessagesService) { }
 
   ngOnInit(): void {
+    this.getPuzzles();
   }
 
-  puzzle: Puzzle = {
+  getPuzzles(): void {
+    this.puzzleService.getPuzzles()
+      .subscribe(puzzles => this.puzzles = puzzles);
+  }
+
+  puzzle1: Puzzle = {
     id: 1,
-    title: 'Trivial example',
+    title: 'Trivial Example',
     s_representation: '0b00bl2n0000bl2',
   }
 
+  puzzles: Puzzle[];
+  selectedPuzzle: Puzzle;
+
+  onSelect(puzzle: Puzzle): void {
+    this.selectedPuzzle = puzzle;
+    this.messagesService.add(`PuzzleService: Selected puzzle id=${puzzle.id}`)
+  }
 }

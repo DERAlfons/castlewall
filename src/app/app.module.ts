@@ -4,11 +4,15 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { PuzzlesComponent } from './puzzles/puzzles.component';
+import { PuzzleDetailComponent } from './puzzle-detail/puzzle-detail.component';
+import { MessagesComponent } from './messages/messages.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PuzzlesComponent
+    PuzzlesComponent,
+    PuzzleDetailComponent,
+    MessagesComponent
   ],
   imports: [
     BrowserModule,

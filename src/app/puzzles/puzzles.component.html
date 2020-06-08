@@ -1,12 +1,10 @@
-<h2>Details of puzzle: {{puzzle.title}}</h2>
-<div><span>ID: </span>{{puzzle.id}}</div>
-<div>
-    <label>Title:
-        <input [(ngModel)]="puzzle.title" placeholder="Title"/>
-    </label>
-</div>
-<div>
-    <label>Serialized representation:
-        <input [(ngModel)]="puzzle.s_representation" placeholder="Serialized representation"/>
-    </label>
-</div>
+<h2>All Puzzles</h2>
+<ul class="puzzles">
+    <li *ngFor="let puzzle of puzzles"
+        [class.selected]="puzzle === selectedPuzzle"
+        (click)="onSelect(puzzle)">
+        <span class="badge">{{puzzle.id}}</span> {{puzzle.title}}
+    </li>
+</ul>
+
+<app-puzzle-detail [puzzle]="selectedPuzzle"></app-puzzle-detail>

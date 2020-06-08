@@ -1,0 +1,14 @@
+<div *ngIf="puzzle">
+    <h2>Details of puzzle: {{puzzle.title}}</h2>
+    <div><span>ID: </span>{{puzzle.id}}</div>
+    <div>
+        <label>Title:
+            <input [(ngModel)]="puzzle.title" placeholder="Title"/>
+        </label>
+    </div>
+    <div>
+        <label>Serialized representation:
+            <input [(ngModel)]="puzzle.s_representation" placeholder="Serialized representation"/>
+        </label>
+    </div>
+</div>
