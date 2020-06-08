@@ -7,13 +7,15 @@ import { PuzzlesComponent } from './puzzles/puzzles.component';
 import { PuzzleDetailComponent } from './puzzle-detail/puzzle-detail.component';
 import { MessagesComponent } from './messages/messages.component';
 import { AppRoutingModule } from './app-routing.module';
+import { AngularIntroComponent } from './angular-intro/angular-intro.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PuzzlesComponent,
     PuzzleDetailComponent,
-    MessagesComponent
+    MessagesComponent,
+    AngularIntroComponent
   ],
   imports: [
     BrowserModule,
