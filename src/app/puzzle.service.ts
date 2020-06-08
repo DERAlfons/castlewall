@@ -17,4 +17,9 @@ export class PuzzleService {
     this.messagesService.add('PuzzleService: fetched puzzles');
     return of(PUZZLES);
   }
+
+  getPuzzle(id: number): Observable<Puzzle> {
+    this.messagesService.add(`PuzzleService: fetched puzzle id=${id}`);
+    return of(PUZZLES.find(puzzle => puzzle.id === id));
+  }
 }

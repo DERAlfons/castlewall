@@ -1,10 +1,8 @@
 <h2>All Puzzles</h2>
 <ul class="puzzles">
-    <li *ngFor="let puzzle of puzzles"
-        [class.selected]="puzzle === selectedPuzzle"
-        (click)="onSelect(puzzle)">
-        <span class="badge">{{puzzle.id}}</span> {{puzzle.title}}
+    <li *ngFor="let puzzle of puzzles">
+        <a routerLink="/detail/{{puzzle.id}}">
+            <span class="badge">{{puzzle.id}}</span> {{puzzle.title}}
+        </a>
     </li>
 </ul>
-
-<app-puzzle-detail [puzzle]="selectedPuzzle"></app-puzzle-detail>

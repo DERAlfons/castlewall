@@ -8,6 +8,7 @@ import { PuzzleDetailComponent } from './puzzle-detail/puzzle-detail.component';
 import { MessagesComponent } from './messages/messages.component';
 import { AppRoutingModule } from './app-routing.module';
 import { AngularIntroComponent } from './angular-intro/angular-intro.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { AngularIntroComponent } from './angular-intro/angular-intro.component';
     PuzzlesComponent,
     PuzzleDetailComponent,
     MessagesComponent,
-    AngularIntroComponent
+    AngularIntroComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

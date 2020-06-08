@@ -29,10 +29,4 @@ export class PuzzlesComponent implements OnInit {
   }
 
   puzzles: Puzzle[];
-  selectedPuzzle: Puzzle;
-
-  onSelect(puzzle: Puzzle): void {
-    this.selectedPuzzle = puzzle;
-    this.messagesService.add(`PuzzleService: Selected puzzle id=${puzzle.id}`)
-  }
 }
