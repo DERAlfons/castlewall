@@ -33,4 +33,9 @@ export class PuzzleDetailComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
+
+  save(): void {
+    this.puzzleService.updatePuzzle(this.puzzle)
+      .subscribe(() => this.goBack());
+  }
 }

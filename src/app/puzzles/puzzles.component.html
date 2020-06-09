@@ -4,5 +4,19 @@
         <a routerLink="/detail/{{puzzle.id}}">
             <span class="badge">{{puzzle.id}}</span> {{puzzle.title}}
         </a>
+        <button class="delete" title="delete puzzle"
+            (click)="delete(puzzle)">x</button>
     </li>
 </ul>
+
+<div>
+    <label>Puzzle title:
+        <input #puzzleTitle />
+    </label>
+    <label>Puzzle serialized representation:
+        <input #puzzleSRep />
+    </label>
+    <button (click)="add(puzzleTitle.value, puzzleSRep.value); puzzleTitle.value=''; puzzleSRep.value=''">
+        add
+    </button>
+</div>
