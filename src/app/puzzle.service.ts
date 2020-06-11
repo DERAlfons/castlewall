@@ -72,6 +72,20 @@ export class PuzzleService {
       );
   }
 
+  searchPuzzles(term: string): Observable<Puzzle[]> {
+    if (!term.trim()) {
+      return of([]);
+    }
+
+    return this.http.get<Puzzle[]>(`${this.puzzlesUrl}/?title=${term}`)
+      .pipe(
+        tap(x => x.length ?
+          this.log(`found puzzles matching "${term}"`) :
+          this.log(`no puzzles matching "${term}"`)),
+        catchError(this.handleError<Puzzle[]>('searchPuzzles', []))
+      );
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error); // TODO: log error in logging framework
