@@ -6,8 +6,6 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Puzzle } from './puzzle';
 import { MessagesService } from './messages.service';
 
-import { PUZZLES } from './mock-puzzles';
-
 @Injectable({
   providedIn: 'root'
 })
