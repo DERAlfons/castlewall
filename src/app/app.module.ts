@@ -12,7 +12,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AngularIntroComponent } from './angular-intro/angular-intro.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { InMemoryDataService } from './in-memory-data.service';
-import { PuzzleSearchComponent } from './puzzle-search/puzzle-search.component'
+import { PuzzleSearchComponent } from './puzzle-search/puzzle-search.component';
+import { BoardTestComponent } from './board-test/board-test.component'
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { PuzzleSearchComponent } from './puzzle-search/puzzle-search.component'
     MessagesComponent,
     AngularIntroComponent,
     DashboardComponent,
-    PuzzleSearchComponent
+    PuzzleSearchComponent,
+    BoardTestComponent
   ],
   imports: [
     BrowserModule,
