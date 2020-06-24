@@ -133,7 +133,7 @@ export class BoardTestComponent implements OnInit {
             this.disconnect(px, py, px + 1, py);
           }
         }
-        else if (py >= 2) {
+        else if ((dx < 20 - dy) && py >= 2) {
           if (!(this.vboard[px - 1][py - 2])) {
             this.vboard[px - 1][py - 2] = 'wall';
             this.connect(px, py - 1, px , py);
@@ -155,7 +155,7 @@ export class BoardTestComponent implements OnInit {
             this.disconnect(px, py, px, py + 1);
           }
         }
-        else if (px >= 2) {
+        else if ((dx < 20 - dy) && px >= 2) {
           if (!(this.hboard[py - 1][px - 2])) {
             this.hboard[py - 1][px - 2] = 'wall';
             this.connect(px - 1, py, px, py);
