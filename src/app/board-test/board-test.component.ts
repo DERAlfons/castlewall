@@ -11,14 +11,14 @@ export class BoardTestComponent implements OnInit {
   private render_ctx: CanvasRenderingContext2D;
 
   private cboard = [
-    [null, 'black', null, null, null, null, null, 'black', null, null],
+    [null, { color: 'black', direction: 'down', walls: 2 }, null, null, null, null, null, { color: 'black', direction: 'left', walls: 2 }, null, null],
     [null, null, null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null, null, null],
-    [null, null, null, null, 'white', null, null, 'black', null, null],
+    [null, null, null, null, { color: 'white', direction: 'up', walls: 1 }, null, null, { color: 'black', direction: 'up', walls: 1 }, null, null],
     [null, null, null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null, null, null],
-    [null, 'black', null, 'grey', null, null, null, null, null, null],
+    [null, { color: 'black', direction: 'right', walls: 3 }, null, { color: 'grey', direction: 'up', walls: 2 }, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null, null, null]
   ]
@@ -95,8 +95,18 @@ export class BoardTestComponent implements OnInit {
     for (let i = 0; i <= 9; i++) {
       for (let j = 0; j <= 9; j++) {
         if (this.cboard[i][j]) {
-          this.render_ctx.fillStyle = this.cboard[i][j];
+          this.render_ctx.fillStyle = this.cboard[i][j].color;
           this.render_ctx.fillRect(20 + j * 20, 20 + i * 20, 20, 20);
+          if (this.cboard[i][j].direction) {
+            if (this.cboard[i][j].color == 'black') {
+              this.render_ctx.fillStyle = 'white';
+            }
+            else {
+              this.render_ctx.fillStyle = 'black';
+            }
+            this.render_ctx.font = '10px Arial';
+            this.render_ctx.fillText(`${this.cboard[i][j].walls}${this.cboard[i][j].direction[0]}`, 25 + j * 20, 35 + i * 20);
+          }
           this.render_ctx.strokeStyle = 'black';
           this.render_ctx.lineWidth = 4;
           this.render_ctx.strokeRect(20 + j * 20, 20 + i * 20, 20, 20);
