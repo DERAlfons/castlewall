@@ -53,11 +53,11 @@ export class BoardTestComponent implements OnInit {
     for (let i = 0; i <= 9; i++) {
       for (let j = 0; j <= 8; j++) {
         if (this.cboard[i][j] || this.cboard[i][j + 1]) {
-          this.hboard[i][j + 1] = 'blocked';
+          this.hboard[i][j] = 'blocked';
         }
 
         if (this.cboard[j][i] || this.cboard[j + 1][i]) {
-          this.vboard[i][j + 1] = 'blocked';
+          this.vboard[i][j] = 'blocked';
         }
       }
     }
@@ -124,44 +124,44 @@ export class BoardTestComponent implements OnInit {
     if ((px >= 1) && (px <= 10) && (py >= 1) && (py <= 10)) {
       if (dx > dy) {
         if ((dx > 20 - dy) && px <= 9) {
-          if (!(this.hboard[py - 1][px])) {
-            this.hboard[py - 1][px] = 'wall';
+          if (!(this.hboard[py - 1][px - 1])) {
+            this.hboard[py - 1][px - 1] = 'wall';
             this.connect(px, py, px + 1, py);
           }
-          else if (this.hboard[py - 1][px] == 'wall') {
-            this.hboard[py - 1][px] = null;
+          else if (this.hboard[py - 1][px - 1] == 'wall') {
+            this.hboard[py - 1][px - 1] = null;
             this.disconnect(px, py, px + 1, py);
           }
         }
         else if (py >= 2) {
-          if (!(this.vboard[px - 1][py - 1])) {
-            this.vboard[px - 1][py - 1] = 'wall';
+          if (!(this.vboard[px - 1][py - 2])) {
+            this.vboard[px - 1][py - 2] = 'wall';
             this.connect(px, py - 1, px , py);
           }
-          else if (this.vboard[px - 1][py - 1] == 'wall') {
-            this.vboard[px - 1][py - 1] = null;
+          else if (this.vboard[px - 1][py - 2] == 'wall') {
+            this.vboard[px - 1][py - 2] = null;
             this.disconnect(px, py - 1, px, py);
           }
         }
       }
       else {
         if ((dx > 20 - dy) && py <= 9) {
-          if (!(this.vboard[px - 1][py])) {
-            this.vboard[px - 1][py] = 'wall';
+          if (!(this.vboard[px - 1][py - 1])) {
+            this.vboard[px - 1][py - 1] = 'wall';
             this.connect(px, py, px, py + 1);
           }
-          else if (this.vboard[px - 1][py] == 'wall') {
-            this.vboard[px - 1][py] = null;
+          else if (this.vboard[px - 1][py - 1] == 'wall') {
+            this.vboard[px - 1][py - 1] = null;
             this.disconnect(px, py, px, py + 1);
           }
         }
         else if (px >= 2) {
-          if (!(this.hboard[py - 1][px - 1])) {
-            this.hboard[py - 1][px - 1] = 'wall';
+          if (!(this.hboard[py - 1][px - 2])) {
+            this.hboard[py - 1][px - 2] = 'wall';
             this.connect(px - 1, py, px, py);
           }
-          else if (this.hboard[py - 1][px - 1] == 'wall') {
-            this.hboard[py - 1][px - 1] = null;
+          else if (this.hboard[py - 1][px - 2] == 'wall') {
+            this.hboard[py - 1][px - 2] = null;
             this.disconnect(px - 1, py, px, py);
           }
         }
