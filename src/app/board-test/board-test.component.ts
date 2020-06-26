@@ -115,6 +115,61 @@ export class BoardTestComponent implements OnInit {
     }
   }
 
+  check(): boolean {
+    for (let i = 0; i <= 9; i++) {
+      for (let j = 0; j <= 9; j++) {
+        if (this.cboard[i][j]) {
+          switch (this.cboard[i][j].direction) {
+            case 'up':
+              var segment = this.vboard[j].slice(0, i - 1);
+              break;
+            case 'left':
+              var segment = this.hboard[i].slice(0, j - 1);
+              break;
+            case 'down':
+              var segment = this.vboard[j].slice(i + 1, 9);
+              break;
+            case 'right':
+              var segment = this.hboard[i].slice(j + 1, 9);
+              break;
+       
+            default:
+              continue;
+          }
+
+          if (this.cboard[i][j].walls == this.count(segment, 'wall')) {
+            continue;
+          }
+          else {
+            return false;
+          }
+        }
+      }
+    }
+
+    return true;
+  }
+
+  count<T>(array: T[], value: T): number {
+    let count = 0;
+    array.forEach(element => {
+      if (element == value) {
+        count += 1;
+      }
+    });
+
+    return count;
+  }
+
+  checkBtn(): void {
+    if (this.check()) {
+      console.log("Yay");
+    }
+    else {
+      console.log("Nay");
+    }
+  }
+
   handleMousedown(event: MouseEvent): void {
     let px = Math.floor(event.offsetX / 20);
     let py = Math.floor(event.offsetY / 20);
