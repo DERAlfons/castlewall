@@ -1,4 +1,5 @@
 import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { ɵINTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS } from '@angular/platform-browser-dynamic';
 
 @Component({
   selector: 'app-board-test',
@@ -115,7 +116,27 @@ export class BoardTestComponent implements OnInit {
     }
   }
 
-  check(): boolean {
+  check_in_out(): boolean {
+    for (let i = 1; i <= 8; i++) {
+      for (let j = 1; j <= 8; j++) {
+        if (this.cboard[i][j] && this.cboard[i][j].color != 'grey') {
+
+          var segment = this.transpose(this.hboard)[j - 1].slice(0, i);
+
+          if (this.cboard[i][j].color == 'black' && this.is_odd(this.count(segment, 'wall'))) {
+            return false;
+          }
+          else if (this.cboard[i][j].color == 'white' && this.is_even(this.count(segment, 'wall'))) {
+            return false;
+          }
+        }
+      }
+    }
+
+    return true;
+  }
+
+  check_hints(): boolean {
     for (let i = 0; i <= 9; i++) {
       for (let j = 0; j <= 9; j++) {
         if (this.cboard[i][j]) {
@@ -150,6 +171,31 @@ export class BoardTestComponent implements OnInit {
     return true;
   }
 
+  transpose<T>(matrix: T[][]): T[][] {
+    let result = [];
+    for (let i = 0; i < matrix[0].length; i++) {
+      result.push([]);
+      for (let j = 0; j < matrix.length; j++) {
+        result[i].push(matrix[j][i]);
+      }
+    }
+
+    return result;
+  }
+
+  is_odd(n: number): boolean {
+    return !this.is_even(n);
+  }
+
+  is_even(n: number): boolean {
+    if (n % 2 == 0) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
   count<T>(array: T[], value: T): number {
     let count = 0;
     array.forEach(element => {
@@ -162,7 +208,7 @@ export class BoardTestComponent implements OnInit {
   }
 
   checkBtn(): void {
-    if (this.check()) {
+    if (this.check_in_out()) {
       console.log("Yay");
     }
     else {
