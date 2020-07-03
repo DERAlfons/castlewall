@@ -38,6 +38,8 @@ export class BoardTestComponent implements OnInit {
   }
 
   render(): void {
+    this.render_ctx.clearRect(0, 0, this.canvasbg.nativeElement.width, this.canvasbg.nativeElement.height);
+
     this.render_ctx.fillStyle = 'red';
     this.render_ctx.fillRect(10, 10, 20, 20);
 
@@ -81,6 +83,18 @@ export class BoardTestComponent implements OnInit {
         }
       }
     }
+
+    for (let i = 0; i <= 9; i++) {
+      for (let j = 0; j <= 8; j++) {
+        if (this.board.vboard[i][j] == 'wall') {
+          this.connect(i + 1, j + 1, i + 1, j + 2);
+        }
+
+        if (this.board.hboard[i][j] == 'wall') {
+          this.connect(j + 1, i + 1, j + 2, i + 1);
+        }
+      }
+    }
   }
 
   checkBtn(): void {
@@ -103,21 +117,21 @@ export class BoardTestComponent implements OnInit {
         if ((dx > 20 - dy) && px <= 9) {
           if (!(this.board.hboard[py - 1][px - 1])) {
             this.board.hboard[py - 1][px - 1] = 'wall';
-            this.connect(px, py, px + 1, py);
+            this.render();
           }
           else if (this.board.hboard[py - 1][px - 1] == 'wall') {
             this.board.hboard[py - 1][px - 1] = null;
-            this.disconnect(px, py, px + 1, py);
+            this.render();
           }
         }
         else if ((dx < 20 - dy) && py >= 2) {
           if (!(this.board.vboard[px - 1][py - 2])) {
             this.board.vboard[px - 1][py - 2] = 'wall';
-            this.connect(px, py - 1, px , py);
+            this.render();
           }
           else if (this.board.vboard[px - 1][py - 2] == 'wall') {
             this.board.vboard[px - 1][py - 2] = null;
-            this.disconnect(px, py - 1, px, py);
+            this.render();
           }
         }
       }
@@ -125,21 +139,21 @@ export class BoardTestComponent implements OnInit {
         if ((dx > 20 - dy) && py <= 9) {
           if (!(this.board.vboard[px - 1][py - 1])) {
             this.board.vboard[px - 1][py - 1] = 'wall';
-            this.connect(px, py, px, py + 1);
+            this.render();
           }
           else if (this.board.vboard[px - 1][py - 1] == 'wall') {
             this.board.vboard[px - 1][py - 1] = null;
-            this.disconnect(px, py, px, py + 1);
+            this.render();
           }
         }
         else if ((dx < 20 - dy) && px >= 2) {
           if (!(this.board.hboard[py - 1][px - 2])) {
             this.board.hboard[py - 1][px - 2] = 'wall';
-            this.connect(px - 1, py, px, py);
+            this.render();
           }
           else if (this.board.hboard[py - 1][px - 2] == 'wall') {
             this.board.hboard[py - 1][px - 2] = null;
-            this.disconnect(px - 1, py, px, py);
+            this.render();
           }
         }
       }
