@@ -27,6 +27,24 @@ export class Board {
     }
   }
 
+  update_wall_v(i: number, j: number): void {
+    if (!this.vboard[i][j]) {
+      this.vboard[i][j] = 'wall';
+    }
+    else if (this.vboard[i][j] == 'wall') {
+      this.vboard[i][j] = null;
+    }
+  }
+
+  update_wall_h(i: number, j: number): void {
+    if (!this.hboard[i][j]) {
+      this.hboard[i][j] = 'wall';
+    }
+    else if (this.hboard[i][j] == 'wall') {
+      this.hboard[i][j] = null;
+    }
+  }
+
   check(): boolean {
     if (this.check_hints() && this.check_in_out() && this.check_single_circle()) {
       return true;

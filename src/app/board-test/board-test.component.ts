@@ -115,46 +115,22 @@ export class BoardTestComponent implements OnInit {
     if ((px >= 1) && (px <= 10) && (py >= 1) && (py <= 10)) {
       if (dx > dy) {
         if ((dx > 20 - dy) && px <= 9) {
-          if (!(this.board.hboard[py - 1][px - 1])) {
-            this.board.hboard[py - 1][px - 1] = 'wall';
-            this.render();
-          }
-          else if (this.board.hboard[py - 1][px - 1] == 'wall') {
-            this.board.hboard[py - 1][px - 1] = null;
-            this.render();
-          }
+          this.board.update_wall_h(py - 1, px - 1);
+          this.render();
         }
         else if ((dx < 20 - dy) && py >= 2) {
-          if (!(this.board.vboard[px - 1][py - 2])) {
-            this.board.vboard[px - 1][py - 2] = 'wall';
-            this.render();
-          }
-          else if (this.board.vboard[px - 1][py - 2] == 'wall') {
-            this.board.vboard[px - 1][py - 2] = null;
-            this.render();
-          }
+          this.board.update_wall_v(px - 1, py - 2);
+          this.render();
         }
       }
       else {
         if ((dx > 20 - dy) && py <= 9) {
-          if (!(this.board.vboard[px - 1][py - 1])) {
-            this.board.vboard[px - 1][py - 1] = 'wall';
-            this.render();
-          }
-          else if (this.board.vboard[px - 1][py - 1] == 'wall') {
-            this.board.vboard[px - 1][py - 1] = null;
-            this.render();
-          }
+          this.board.update_wall_v(px - 1, py - 1);
+          this.render();
         }
         else if ((dx < 20 - dy) && px >= 2) {
-          if (!(this.board.hboard[py - 1][px - 2])) {
-            this.board.hboard[py - 1][px - 2] = 'wall';
-            this.render();
-          }
-          else if (this.board.hboard[py - 1][px - 2] == 'wall') {
-            this.board.hboard[py - 1][px - 2] = null;
-            this.render();
-          }
+          this.board.update_wall_h(py - 1, px - 2);
+          this.render();
         }
       }
     }
