@@ -43,7 +43,7 @@ export class BoardTestComponent implements OnInit {
     this.render_ctx.fillStyle = 'red';
     this.render_ctx.fillRect(10, 10, 20, 20);
 
-    for (let i = 0; i <= 10; i++) {
+    for (let i = 0; i <= this.board.width; i++) {
       this.render_ctx.beginPath();
       this.render_ctx.strokeStyle = 'black';
       this.render_ctx.lineWidth = 2;
@@ -52,7 +52,7 @@ export class BoardTestComponent implements OnInit {
       this.render_ctx.stroke();
       this.render_ctx.closePath();
     }
-    for (let i = 0; i <= 10; i++) {
+    for (let i = 0; i <= this.board.height; i++) {
       this.render_ctx.beginPath();
       this.render_ctx.strokeStyle = 'black';
       this.render_ctx.lineWidth = 2;
@@ -62,8 +62,8 @@ export class BoardTestComponent implements OnInit {
       this.render_ctx.closePath();
     }
 
-    for (let i = 0; i <= 9; i++) {
-      for (let j = 0; j <= 9; j++) {
+    for (let i = 0; i < this.board.height; i++) {
+      for (let j = 0; j < this.board.width; j++) {
         if (this.board.cboard[i][j]) {
           this.render_ctx.fillStyle = this.board.cboard[i][j].color;
           this.render_ctx.fillRect(20 + j * 20, 20 + i * 20, 20, 20);
@@ -84,12 +84,15 @@ export class BoardTestComponent implements OnInit {
       }
     }
 
-    for (let i = 0; i <= 9; i++) {
-      for (let j = 0; j <= 8; j++) {
+    for (let i = 0; i < this.board.width; i++) {
+      for (let j = 0; j < this.board.height - 1; j++) {
         if (this.board.vboard[i][j] == 'wall') {
           this.connect(i + 1, j + 1, i + 1, j + 2);
         }
-
+      }
+    }
+    for (let i = 0; i < this.board.height; i++) {
+      for (let j = 0; j < this.board.width - 1; j++) {
         if (this.board.hboard[i][j] == 'wall') {
           this.connect(j + 1, i + 1, j + 2, i + 1);
         }
@@ -112,26 +115,24 @@ export class BoardTestComponent implements OnInit {
     let dx = event.offsetX % 20;
     let dy = event.offsetY % 20;
 
-    if ((px >= 1) && (px <= 10) && (py >= 1) && (py <= 10)) {
-      if (dx > dy) {
-        if ((dx > 20 - dy) && px <= 9) {
-          this.board.update_wall_h(py - 1, px - 1);
-          this.render();
-        }
-        else if ((dx < 20 - dy) && py >= 2) {
-          this.board.update_wall_v(px - 1, py - 2);
-          this.render();
-        }
+    if (dx > dy) {
+      if (dx > 20 - dy) {
+        this.board.update_wall_h(py - 1, px - 1);
+        this.render();
       }
       else {
-        if ((dx > 20 - dy) && py <= 9) {
-          this.board.update_wall_v(px - 1, py - 1);
-          this.render();
-        }
-        else if ((dx < 20 - dy) && px >= 2) {
-          this.board.update_wall_h(py - 1, px - 2);
-          this.render();
-        }
+        this.board.update_wall_v(px - 1, py - 2);
+        this.render();
+      }
+    }
+    else {
+      if (dx > 20 - dy) {
+        this.board.update_wall_v(px - 1, py - 1);
+        this.render();
+      }
+      else {
+        this.board.update_wall_h(py - 1, px - 2);
+        this.render();
       }
     }
   }

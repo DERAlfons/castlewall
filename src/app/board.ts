@@ -2,21 +2,17 @@ export class Board {
   public width: number;
   public height: number;
 
-  public vboard = [];
-  public hboard = [];
+  public vboard;
+  public hboard;
 
   constructor(public cboard) {
-    for (let i = 0; i <= 9; i++) {
-      this.vboard.push([]);
-      this.hboard.push([]);
-      for (let j = 0; j <= 8; j++) {
-        if (this.cboard[i][j] || this.cboard[i][j + 1]) {
-          this.hboard[i].push('blocked');
-        }
-        else {
-          this.hboard[i].push(null);
-        }
+    this.height = cboard.length;
+    this.width = cboard[0].length;
 
+    this.vboard = [];
+    for (let i = 0; i < this.width; i++) {
+      this.vboard.push([]);
+      for (let j = 0; j < this.height - 1; j++) {
         if (this.cboard[j][i] || this.cboard[j + 1][i]) {
           this.vboard[i].push('blocked');
         }
@@ -25,9 +21,27 @@ export class Board {
         }
       }
     }
+
+    this.hboard = [];
+    for (let i = 0; i < this.height; i++) {
+      this.hboard.push([]);
+      for (let j = 0; j < this.width - 1; j++) {
+        if (this.cboard[i][j] || this.cboard[i][j + 1]) {
+          this.hboard[i].push('blocked');
+        }
+        else {
+          this.hboard[i].push(null);
+        }
+      }
+    }
+
   }
 
   update_wall_v(i: number, j: number): void {
+    if (i < 0 || i >= this.width || j < 0 || j >= this.height - 1) {
+      return;
+    }
+
     if (!this.vboard[i][j]) {
       this.vboard[i][j] = 'wall';
     }
@@ -37,6 +51,10 @@ export class Board {
   }
 
   update_wall_h(i: number, j: number): void {
+    if (i < 0 || i >= this.height || j < 0 || j >= this.width - 1) {
+      return;
+    }
+
     if (!this.hboard[i][j]) {
       this.hboard[i][j] = 'wall';
     }
@@ -57,11 +75,11 @@ export class Board {
   check_single_circle(): boolean {
     let start_wall = { i: 0, j: 0 };
     while (this.hboard[start_wall.i][start_wall.j] != 'wall') {
-      if (start_wall.i == 9 && start_wall.j == 8) {
+      if (start_wall.i == this.height - 1 && start_wall.j == this.width - 2) {
         console.log('empty board');
         return false;
       }
-      else if (start_wall.i == 9) {
+      else if (start_wall.i == this.height - 1) {
         start_wall.i = 0;
         start_wall.j += 1;
       }
@@ -70,9 +88,15 @@ export class Board {
       }
     }
 
-    let vcircle = [[],[],[],[],[],[],[],[],[],[]];
-    let hcircle = [[],[],[],[],[],[],[],[],[],[]];
     let cpath = [];
+    let vcircle = [];
+    for (let i = 0; i < this.width; i++) {
+      vcircle.push([]);
+    }
+    let hcircle = [];
+    for (let i = 0; i < this.height; i++) {
+      hcircle.push([]);
+    }
 
     hcircle[start_wall.i][start_wall.j] = true;
     cpath.push({ i: start_wall.i, j: start_wall.j });
@@ -106,14 +130,17 @@ export class Board {
       cpath.push(nwp);
     }
 
-    for (let i = 0; i <= 9; i++) {
-      for (let j = 0; j <= 8; j++) {
+    for (let i = 0; i < this.width; i++) {
+      for (let j = 0; j < this.height - 1; j++) {
         if (this.vboard[i][j] == 'wall' && !vcircle[i][j]) {
           console.log('extra walls');
           return false;
         }
-
-        if (this.hboard[i][j] == 'wall' && !hcircle[i][j]) {
+      }
+    }
+    for (let i = 0; i < this.height; i++) {
+      for (let j = 0; j < this.width - 1; j++) {
+        if (this.vboard[i][j] == 'wall' && !vcircle[i][j]) {
           console.log('extra walls');
           return false;
         }
@@ -124,10 +151,10 @@ export class Board {
   }
 
   next_wall_post(p_post, c_post) {
-    if (c_post.i <= 8 && c_post.i >= p_post.i && this.vboard[c_post.j][c_post.i] == 'wall') {
+    if (c_post.i < this.height - 1 && c_post.i >= p_post.i && this.vboard[c_post.j][c_post.i] == 'wall') {
       return { i: c_post.i + 1, j: c_post.j };
     }
-    else if (c_post.j <= 8 && c_post.j >= p_post.j && this.hboard[c_post.i][c_post.j] == 'wall') {
+    else if (c_post.j < this.width - 1 && c_post.j >= p_post.j && this.hboard[c_post.i][c_post.j] == 'wall') {
       return { i: c_post.i, j: c_post.j + 1 };
     }
     else if (c_post.i >= 1 && c_post.i <= p_post.i && this.vboard[c_post.j][c_post.i - 1] == 'wall') {
@@ -151,8 +178,8 @@ export class Board {
   }
 
   check_in_out(): boolean {
-    for (let i = 1; i <= 8; i++) {
-      for (let j = 1; j <= 8; j++) {
+    for (let i = 1; i < this.height - 1; i++) {
+      for (let j = 1; j < this.width - 1; j++) {
         if (this.cboard[i][j] && this.cboard[i][j].color != 'grey') {
 
           var segment = this.transpose(this.hboard)[j - 1].slice(0, i);
@@ -171,8 +198,8 @@ export class Board {
   }
 
   check_hints(): boolean {
-    for (let i = 0; i <= 9; i++) {
-      for (let j = 0; j <= 9; j++) {
+    for (let i = 0; i < this.height; i++) {
+      for (let j = 0; j < this.width; j++) {
         if (this.cboard[i][j]) {
           switch (this.cboard[i][j].direction) {
             case 'up':
@@ -182,10 +209,10 @@ export class Board {
               var segment = this.hboard[i].slice(0, j - 1);
               break;
             case 'down':
-              var segment = this.vboard[j].slice(i + 1, 9);
+              var segment = this.vboard[j].slice(i + 1, this.height - 1);
               break;
             case 'right':
-              var segment = this.hboard[i].slice(j + 1, 9);
+              var segment = this.hboard[i].slice(j + 1, this.width - 1);
               break;
        
             default:
