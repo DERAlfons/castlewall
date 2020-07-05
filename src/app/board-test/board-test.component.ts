@@ -19,7 +19,7 @@ export class BoardTestComponent implements OnInit {
 
   ngOnInit(): void {
     this.render_ctx = this.canvasbg.nativeElement.getContext('2d');
-    this.puzzleService.getPuzzle(2).subscribe(puzzle => {
+    this.puzzleService.getPuzzle(1).subscribe(puzzle => {
       this.board = new Board(puzzle);
       this.render();
       this.canvasbg.nativeElement.addEventListener('mousedown', event => this.handleMousedown(event));
@@ -37,7 +37,7 @@ export class BoardTestComponent implements OnInit {
       this.render_ctx.strokeStyle = 'black';
       this.render_ctx.lineWidth = 2;
       this.render_ctx.moveTo(20 + i * 20, 20);
-      this.render_ctx.lineTo(20 + i * 20, 220);
+      this.render_ctx.lineTo(20 + i * 20, 20 + this.board.height * 20);
       this.render_ctx.stroke();
       this.render_ctx.closePath();
     }
@@ -46,7 +46,7 @@ export class BoardTestComponent implements OnInit {
       this.render_ctx.strokeStyle = 'black';
       this.render_ctx.lineWidth = 2;
       this.render_ctx.moveTo(20, 20 + i * 20);
-      this.render_ctx.lineTo(220, 20 + i * 20);
+      this.render_ctx.lineTo(20 + this.board.width * 20, 20 + i * 20);
       this.render_ctx.stroke();
       this.render_ctx.closePath();
     }
