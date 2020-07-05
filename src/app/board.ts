@@ -1,3 +1,4 @@
+import { Puzzle } from './puzzle';
 import { WallHint } from './wall-hint';
 import { Indices, is_even, is_odd, transpose, count } from './util';
 
@@ -5,12 +6,24 @@ export class Board {
   public width: number;
   public height: number;
 
+  public cboard: WallHint[][];
   public vboard: string[][];
   public hboard: string[][];
 
-  constructor(public cboard: WallHint[][]) {
-    this.height = cboard.length;
-    this.width = cboard[0].length;
+  constructor(puzzle: Puzzle) {
+    this.width = puzzle.width;
+    this.height = puzzle.height;
+
+    this.cboard = [];
+    for (let i = 0; i < puzzle.height; i++) {
+      this.cboard.push([]);
+      for (let j = 0; j < puzzle.width; j++) {
+        this.cboard[i].push(null);
+      }
+    }
+    puzzle.hints.forEach(h => {
+      this.cboard[h.position.i][h.position.j] = h.hint;
+    });
 
     this.vboard = [];
     for (let i = 0; i < this.width; i++) {
@@ -36,7 +49,6 @@ export class Board {
         }
       }
     }
-
   }
 
   update_wall_v(i: number, j: number): void {

@@ -22,12 +22,6 @@ export class PuzzlesComponent implements OnInit {
       .subscribe(puzzles => this.puzzles = puzzles);
   }
 
-  puzzle1: Puzzle = {
-    id: 1,
-    title: 'Trivial Example',
-    s_representation: '0b00bl2n0000bl2',
-  }
-
   puzzles: Puzzle[];
 
   add(title: string, s_representation: string): void {

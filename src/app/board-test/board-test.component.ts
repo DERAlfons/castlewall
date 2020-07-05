@@ -1,5 +1,6 @@
 import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 
+import { PuzzleService } from '../puzzle.service';
 import { Board } from '../board';
 
 @Component({
@@ -14,27 +15,15 @@ export class BoardTestComponent implements OnInit {
 
   private board: Board;
 
-  constructor() {
-    let cboard = [
-      [null, { color: 'black', direction: 'down', walls: 2 }, null, null, null, null, null, { color: 'black', direction: 'left', walls: 2 }, null, null],
-      [null, null, null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null, null, null],
-      [null, null, null, null, { color: 'white', direction: 'up', walls: 1 }, null, null, { color: 'black', direction: 'up', walls: 1 }, null, null],
-      [null, null, null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null, null, null],
-      [null, { color: 'black', direction: 'right', walls: 3 }, null, { color: 'grey', direction: 'up', walls: 2 }, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null, null, null],
-      [null, null, null, null, null, null, null, null, null, null]
-    ]
-
-    this.board = new Board(cboard);
-  }
+  constructor(private puzzleService: PuzzleService) { }
 
   ngOnInit(): void {
     this.render_ctx = this.canvasbg.nativeElement.getContext('2d');
-    this.canvasbg.nativeElement.addEventListener('mousedown', event => this.handleMousedown(event));
-    requestAnimationFrame(() => this.render());
+    this.puzzleService.getPuzzle(2).subscribe(puzzle => {
+      this.board = new Board(puzzle);
+      this.render();
+      this.canvasbg.nativeElement.addEventListener('mousedown', event => this.handleMousedown(event));
+    });
   }
 
   render(): void {
