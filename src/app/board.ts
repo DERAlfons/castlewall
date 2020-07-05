@@ -1,9 +1,5 @@
 import { WallHint } from './wall-hint';
-
-interface Indices {
-  i: number;
-  j: number;
-}
+import { Indices, is_even, is_odd, transpose, count } from './util';
 
 export class Board {
   public width: number;
@@ -188,12 +184,12 @@ export class Board {
       for (let j = 1; j < this.width - 1; j++) {
         if (this.cboard[i][j] && this.cboard[i][j].color != 'grey') {
 
-          var segment = this.transpose(this.hboard)[j - 1].slice(0, i);
+          var segment = transpose(this.hboard)[j - 1].slice(0, i);
 
-          if (this.cboard[i][j].color == 'black' && this.is_odd(this.count(segment, 'wall'))) {
+          if (this.cboard[i][j].color == 'black' && is_odd(count(segment, 'wall'))) {
             return false;
           }
-          else if (this.cboard[i][j].color == 'white' && this.is_even(this.count(segment, 'wall'))) {
+          else if (this.cboard[i][j].color == 'white' && is_even(count(segment, 'wall'))) {
             return false;
           }
         }
@@ -225,7 +221,7 @@ export class Board {
               continue;
           }
 
-          if (this.cboard[i][j].walls == this.count(segment, 'wall')) {
+          if (this.cboard[i][j].walls == count(segment, 'wall')) {
             continue;
           }
           else {
@@ -236,41 +232,5 @@ export class Board {
     }
 
     return true;
-  }
-
-  transpose<T>(matrix: T[][]): T[][] {
-    let result = [];
-    for (let i = 0; i < matrix[0].length; i++) {
-      result.push([]);
-      for (let j = 0; j < matrix.length; j++) {
-        result[i].push(matrix[j][i]);
-      }
-    }
-
-    return result;
-  }
-
-  is_odd(n: number): boolean {
-    return !this.is_even(n);
-  }
-
-  is_even(n: number): boolean {
-    if (n % 2 == 0) {
-      return true;
-    }
-    else {
-      return false;
-    }
-  }
-
-  count<T>(array: T[], value: T): number {
-    let count = 0;
-    array.forEach(element => {
-      if (element == value) {
-        count += 1;
-      }
-    });
-
-    return count;
   }
 }
