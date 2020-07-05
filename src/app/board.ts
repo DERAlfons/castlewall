@@ -1,11 +1,18 @@
+import { WallHint } from './wall-hint';
+
+interface Indices {
+  i: number;
+  j: number;
+}
+
 export class Board {
   public width: number;
   public height: number;
 
-  public vboard;
-  public hboard;
+  public vboard: string[][];
+  public hboard: string[][];
 
-  constructor(public cboard) {
+  constructor(public cboard: WallHint[][]) {
     this.height = cboard.length;
     this.width = cboard[0].length;
 
@@ -21,7 +28,6 @@ export class Board {
         }
       }
     }
-
     this.hboard = [];
     for (let i = 0; i < this.height; i++) {
       this.hboard.push([]);
@@ -73,7 +79,7 @@ export class Board {
   }
 
   check_single_circle(): boolean {
-    let start_wall = { i: 0, j: 0 };
+    let start_wall: Indices = { i: 0, j: 0 };
     while (this.hboard[start_wall.i][start_wall.j] != 'wall') {
       if (start_wall.i == this.height - 1 && start_wall.j == this.width - 2) {
         console.log('empty board');
@@ -88,12 +94,12 @@ export class Board {
       }
     }
 
-    let cpath = [];
-    let vcircle = [];
+    let cpath: Indices[] = [];
+    let vcircle: boolean[][] = [];
     for (let i = 0; i < this.width; i++) {
       vcircle.push([]);
     }
-    let hcircle = [];
+    let hcircle: boolean[][] = [];
     for (let i = 0; i < this.height; i++) {
       hcircle.push([]);
     }
@@ -150,7 +156,7 @@ export class Board {
     return true;
   }
 
-  next_wall_post(p_post, c_post) {
+  next_wall_post(p_post: Indices, c_post: Indices): Indices{
     if (c_post.i < this.height - 1 && c_post.i >= p_post.i && this.vboard[c_post.j][c_post.i] == 'wall') {
       return { i: c_post.i + 1, j: c_post.j };
     }
@@ -167,7 +173,7 @@ export class Board {
     return null;
   }
 
-  intersect(path, point): boolean {
+  intersect(path: Indices[], point: Indices): boolean {
     for (let i = 1; i < path.length; i++) {
       if (path[i].i == point.i && path[i].j == point.j) {
         return true;
