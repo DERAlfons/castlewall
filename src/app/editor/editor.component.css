@@ -2,6 +2,10 @@ canvas {
     border-style: solid
 }
 
+.puzzle-editor {
+  position: relative;
+}
+
 .puzzle-editor .hint-menu {
   background-color: grey;
   color: #000;
@@ -10,9 +14,8 @@ canvas {
 
   position: absolute;
   z-index: 1;
-  top: 100%;
-  left: 50%;
-  margin-left: -100px;
+  margin-top: 5px;
+  margin-left: -148px;
 }
 
 .puzzle-editor .hint-menu::after {

@@ -10,6 +10,8 @@ export class EditorComponent implements OnInit {
   @ViewChild('canvasbg', { static: true })
   canvasbg: ElementRef<HTMLCanvasElement>;
   menuActive: boolean = false;
+  positionX: string = '0px';
+  positionY: string = '0px';
 
   constructor() { }
 
@@ -18,11 +20,18 @@ export class EditorComponent implements OnInit {
   }
 
   handleMousedown(event: MouseEvent): void {
+    console.log('canvas mousedown');
+    this.positionX = `${event.offsetX}px`;
+    this.positionY = `${event.offsetY}px`;
     this.menuActive = true;
   }
 
   addHint(color: string, direction: string, walls: number): void {
     console.log(`adding Hint: color=${color}, direction=${direction}, walls=${walls}`);
+    this.menuActive = false;
+  }
+
+  closeHintMenu(): void {
     this.menuActive = false;
   }
 }
