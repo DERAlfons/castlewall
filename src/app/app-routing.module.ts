@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { PuzzlesComponent } from './puzzles/puzzles.component';
 import { PuzzleDetailComponent } from './puzzle-detail/puzzle-detail.component';
 import { BoardTestComponent } from './board-test/board-test.component';
+import { EditorComponent } from './editor/editor.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -13,7 +14,8 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent},
   { path: 'puzzles', component: PuzzlesComponent },
   { path: 'detail/:id', component: PuzzleDetailComponent },
-  { path: 'board', component: BoardTestComponent }
+  { path: 'board', component: BoardTestComponent },
+  { path: 'editor', component: EditorComponent }
 ];
 
 @NgModule({

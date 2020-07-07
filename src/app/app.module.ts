@@ -13,7 +13,8 @@ import { AngularIntroComponent } from './angular-intro/angular-intro.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { InMemoryDataService } from './in-memory-data.service';
 import { PuzzleSearchComponent } from './puzzle-search/puzzle-search.component';
-import { BoardTestComponent } from './board-test/board-test.component'
+import { BoardTestComponent } from './board-test/board-test.component';
+import { EditorComponent } from './editor/editor.component'
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { BoardTestComponent } from './board-test/board-test.component'
     AngularIntroComponent,
     DashboardComponent,
     PuzzleSearchComponent,
-    BoardTestComponent
+    BoardTestComponent,
+    EditorComponent
   ],
   imports: [
     BrowserModule,

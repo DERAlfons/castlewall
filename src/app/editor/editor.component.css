@@ -1,0 +1,27 @@
+canvas {
+    border-style: solid
+}
+
+.puzzle-editor .hint-menu {
+  background-color: grey;
+  color: #000;
+  padding: 5px 0;
+  border-radius: 6px;
+
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 50%;
+  margin-left: -100px;
+}
+
+.puzzle-editor .hint-menu::after {
+  content: " ";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent grey transparent;
+}

@@ -1,0 +1,25 @@
+<div class="puzzle-editor">
+  <canvas #canvasbg width="600" height="300"></canvas>
+  <div class="hint-menu" *ngIf="menuActive">
+    <input type="radio" id="black" #color name="color" value="black" />
+    <label for="black">Black</label>
+    <input type="radio" id="white" #color name="color" value="white" />
+    <label for="white">White</label>
+    <input type="radio" id="grey" #color name="color" value="grey" />
+    <label for="grey">Grey</label>
+    <br>
+    <input type="radio" #direction name="direction" id="left" value="left" />
+    <label for="left">Left</label>
+    <input type="radio" #direction name="direction" id="up" value="up" />
+    <label for="up">Up</label>
+    <input type="radio" #direction name="direction" id="right" value="right" />
+    <label for="right">Right</label>
+    <input type="radio" #direction name="direction" id="down" value="down" />
+    <label for="down">Down</label>
+    <br>
+    <input type="number" #walls id="walls" min="1" max="10" />
+    <label for="walls">Walls</label>
+    <br>
+    <button (click)="addHint(color.value, direction.value, walls.value)">Add</button>
+  </div>
+</div>
