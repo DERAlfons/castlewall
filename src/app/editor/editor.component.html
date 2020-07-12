@@ -1,30 +1,30 @@
 <div class="puzzle-editor">
   <canvas #canvasbg width="600" height="300"></canvas>
-  <div class="hint-menu" *ngIf="menuActive" [style.left]="positionX" [style.top]="positionY">
-    <input type="radio" id="black" #color name="color" value="black" />
+  <div class="hint-menu" *ngIf="menuActive" [style.left]="menuPositionX" [style.top]="menuPositionY">
+    <input type="radio" id="black" name="color" [(ngModel)]="editColor" value="black" />
     <label for="black">Black</label>
-    <input type="radio" id="white" #color name="color" value="white" />
+    <input type="radio" id="white" name="color" [(ngModel)]="editColor" value="white" />
     <label for="white">White</label>
-    <input type="radio" id="grey" #color name="color" value="grey" />
+    <input type="radio" id="grey" name="color" [(ngModel)]="editColor" value="grey" />
     <label for="grey">Grey</label>
-    <input type="radio" id="nocolor" #color name="color" value="nocolor" />
+    <input type="radio" id="nocolor" name="color" [(ngModel)]="editColor" value="nocolor" />
     <label for="nocolor">None</label>
     <br>
-    <input type="radio" #direction name="direction" id="left" value="left" />
+    <input type="radio" name="direction" id="left" [(ngModel)]="editDirection" value="left" />
     <label for="left">Left</label>
-    <input type="radio" #direction name="direction" id="up" value="up" />
+    <input type="radio" name="direction" id="up" [(ngModel)]="editDirection" value="up" />
     <label for="up">Up</label>
-    <input type="radio" #direction name="direction" id="right" value="right" />
+    <input type="radio" name="direction" id="right" [(ngModel)]="editDirection" value="right" />
     <label for="right">Right</label>
-    <input type="radio" #direction name="direction" id="down" value="down" />
+    <input type="radio" name="direction" id="down" [(ngModel)]="editDirection" value="down" />
     <label for="down">Down</label>
-    <input type="radio" #direction name="direction" id="nodirection" value="nodirection" />
+    <input type="radio" name="direction" id="nodirection" [(ngModel)]="editDirection" value="nodirection" />
     <label for="nodirection">None</label>
     <br>
-    <input type="number" #walls id="walls" min="1" max="10" />
+    <input type="number" #walls id="walls" value="0" min="0" max="10" />
     <label for="walls">Walls</label>
     <br>
-    <button (click)="addHint(color.value, direction.value, walls.value)">Add</button>
+    <button (click)="addHint(walls.value)">Add</button>
     <button (click)="closeHintMenu()">Cancel</button>
   </div>
 </div>

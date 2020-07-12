@@ -4,6 +4,7 @@ canvas {
 
 .puzzle-editor {
   position: relative;
+  left: 200px;
 }
 
 .puzzle-editor .hint-menu {
