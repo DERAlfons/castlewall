@@ -26,6 +26,15 @@ export class BoardTestComponent implements OnInit {
     });
   }
 
+  loadFile(puzzleFile: File): void {
+    let reader = new FileReader();
+    reader.onload = (_) => {
+      this.board = new Board(JSON.parse(reader.result as string));
+      this.render();
+    };
+    reader.readAsText(puzzleFile);
+  }
+
   render(): void {
     this.render_ctx.clearRect(0, 0, this.canvasbg.nativeElement.width, this.canvasbg.nativeElement.height);
 

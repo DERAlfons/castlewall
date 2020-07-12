@@ -1,3 +1,7 @@
 <canvas #canvasbg width="600" height="300"></canvas>
 <canvas #canvasfg width="600" height="300"></canvas>
+<br>
 <button (click)="checkBtn()">Check</button>
+<br>
+<input type="file" #puzzleFile />
+<button (click)="loadFile(puzzleFile.files[0])">Load puzzle file</button>
