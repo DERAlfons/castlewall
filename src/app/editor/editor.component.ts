@@ -1,6 +1,6 @@
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { Board } from '../board';
-import { NONE_TYPE } from '@angular/compiler';
+import { EditBoard } from '../edit-board';
 
 @Component({
   selector: 'app-editor',
@@ -18,11 +18,14 @@ export class EditorComponent implements OnInit {
   menuPositionY: string = '0px';
   editColor: string;
   editDirection: string;
-  board: Board = new Board({ id: null, title: 'Editor', s_representation: '?', width: 10, height: 10, hints: [] });
+  board: EditBoard = new EditBoard({ id: null, title: 'Editor', s_representation: '?', width: 10, height: 10, hints: [] });
+  puzzleDownload: SafeResourceUrl;
 
   private render_ctx: CanvasRenderingContext2D;
 
-  constructor() { }
+  constructor(private sanitizer: DomSanitizer) {
+    this.puzzleDownload = this.sanitizer.bypassSecurityTrustUrl(`data:text/plain;charset=utf-8,${encodeURIComponent(JSON.stringify(this.board.toPuzzle()))}`);
+  }
 
   ngOnInit(): void {
     this.render_ctx = this.canvasbg.nativeElement.getContext('2d');
@@ -134,6 +137,8 @@ export class EditorComponent implements OnInit {
     this.menuActive = false;
 
     this.render();
+
+    this.puzzleDownload = this.sanitizer.bypassSecurityTrustUrl(`data:text/plain;charset=utf-8,${encodeURIComponent(JSON.stringify(this.board.toPuzzle()))}`);
   }
 
   closeHintMenu(): void {
