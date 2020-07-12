@@ -24,13 +24,29 @@ export class EditorComponent implements OnInit {
   private render_ctx: CanvasRenderingContext2D;
 
   constructor(private sanitizer: DomSanitizer) {
-    this.puzzleDownload = this.sanitizer.bypassSecurityTrustUrl(`data:text/plain;charset=utf-8,${encodeURIComponent(JSON.stringify(this.board.toPuzzle()))}`);
+    this.updatePuzzleDownload();
   }
 
   ngOnInit(): void {
     this.render_ctx = this.canvasbg.nativeElement.getContext('2d');
     this.render();
     this.canvasbg.nativeElement.addEventListener('mousedown', event => this.handleMousedown(event));
+  }
+
+  updatePuzzleDownload(): void {
+    this.puzzleDownload = this.sanitizer.bypassSecurityTrustUrl(`data:text/plain;charset=utf-8,${encodeURIComponent(JSON.stringify(this.board.toPuzzle()))}`);
+  }
+
+  updateWidth(width: number): void {
+    this.board.updateWidth(width);
+    this.render();
+    this.updatePuzzleDownload();
+  }
+
+  updateHeight(height: number): void {
+    this.board.updateHeight(height);
+    this.render();
+    this.updatePuzzleDownload();
   }
 
   render(): void {
@@ -138,7 +154,7 @@ export class EditorComponent implements OnInit {
 
     this.render();
 
-    this.puzzleDownload = this.sanitizer.bypassSecurityTrustUrl(`data:text/plain;charset=utf-8,${encodeURIComponent(JSON.stringify(this.board.toPuzzle()))}`);
+    this.updatePuzzleDownload();
   }
 
   closeHintMenu(): void {

@@ -1,3 +1,8 @@
+<input type="number" #editWidth id="editWidth" value="10" min="2" (change)="updateWidth(+editWidth.value)" />
+<label for="editWidth">Width</label>
+<input type="number" #editHeight id="editHeight" value="10" min="2" (change)="updateHeight(+editHeight.value)" />
+<label for="editHeight">Height</label>
+<br>
 <div class="puzzle-editor">
   <canvas #canvasbg width="600" height="300"></canvas>
   <div class="hint-menu" *ngIf="menuActive" [style.left]="menuPositionX" [style.top]="menuPositionY">
