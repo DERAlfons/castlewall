@@ -29,7 +29,7 @@
     <input type="number" #walls id="walls" value="0" min="0" max="10" />
     <label for="walls">Walls</label>
     <br>
-    <button (click)="addHint(walls.value)">Add</button>
+    <button (click)="addHint(+walls.value)">Add</button>
     <button (click)="closeHintMenu()">Cancel</button>
   </div>
 </div>
