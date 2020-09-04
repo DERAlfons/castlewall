@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 
 import { PuzzleService } from '../puzzle.service';
 import { Board } from '../board';
+import { ReadVarExpr } from '@angular/compiler';
 
 @Component({
   selector: 'app-board-test',
@@ -33,6 +34,41 @@ export class BoardTestComponent implements OnInit {
       this.render();
     };
     reader.readAsText(puzzleFile);
+  }
+
+  loadWalls(wallsFile: File): void {
+    let reader = new FileReader();
+    reader.onload = (_) => {
+      this.createWalls(JSON.parse(reader.result as string));
+      this.render();
+    };
+    reader.readAsText(wallsFile);
+  }
+
+  createWalls(walls: any): void {
+    let height = 0;
+    while (walls[`h_r${height}_c0`] !== undefined) {
+      height += 1;
+    }
+    let width = 0;
+    while (walls[`v_r0_c${width}`] !== undefined) {
+      width += 1;
+    }
+
+    for (let i = 0; i < height; i++) {
+      for (let j = 0; j < width - 1; j++) {
+        if (walls[`h_r${i}_c${j}`]) {
+          this.board.update_wall_h(i, j);
+        }
+      }
+    }
+    for (let i = 0; i < width; i++) {
+      for (let j = 0; j < height - 1; j++) {
+        if (walls[`v_r${j}_c${i}`]) {
+          this.board.update_wall_v(i, j);
+        }
+      }
+    }
   }
 
   render(): void {
