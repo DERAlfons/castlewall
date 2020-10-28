@@ -1,7 +1,7 @@
 <h2>All Puzzles</h2>
 <ul class="puzzles">
     <li *ngFor="let puzzle of puzzles">
-        <a routerLink="/detail/{{puzzle.id}}">
+        <a routerLink="/board/{{puzzle.id}}">
             <span class="badge">{{puzzle.id}}</span> {{puzzle.title}}
         </a>
         <button class="delete" title="delete puzzle"

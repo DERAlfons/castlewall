@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent},
   { path: 'puzzles', component: PuzzlesComponent },
   { path: 'detail/:id', component: PuzzleDetailComponent },
-  { path: 'board', component: BoardTestComponent },
+  { path: 'board/:id', component: BoardTestComponent },
   { path: 'editor', component: EditorComponent }
 ];
 

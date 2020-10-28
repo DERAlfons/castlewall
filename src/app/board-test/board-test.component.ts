@@ -2,7 +2,7 @@ import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 
 import { PuzzleService } from '../puzzle.service';
 import { Board } from '../board';
-import { ReadVarExpr } from '@angular/compiler';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-board-test',
@@ -16,11 +16,16 @@ export class BoardTestComponent implements OnInit {
 
   private board: Board;
 
-  constructor(private puzzleService: PuzzleService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private puzzleService: PuzzleService
+  ) { }
 
   ngOnInit(): void {
     this.render_ctx = this.canvasbg.nativeElement.getContext('2d');
-    this.puzzleService.getPuzzle(1).subscribe(puzzle => {
+
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.puzzleService.getPuzzle(id).subscribe(puzzle => {
       this.board = new Board(puzzle);
       this.render();
       this.canvasbg.nativeElement.addEventListener('mousedown', event => this.handleMousedown(event));

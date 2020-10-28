@@ -1,7 +1,7 @@
 <h3>Top rated puzzles</h3>
 <div class="grid grid-pad">
     <a *ngFor="let puzzle of puzzles" class="col-1-4"
-       routerLink="/detail/{{puzzle.id}}">
+       routerLink="/board/{{puzzle.id}}">
         <div class="module puzzle">
             <h4>{{puzzle.title}}</h4>
         </div>

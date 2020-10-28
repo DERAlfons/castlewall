@@ -19,6 +19,6 @@ export class DashboardComponent implements OnInit {
 
   getPuzzles(): void {
     this.puzzleService.getPuzzles()
-      .subscribe(puzzles => this.puzzles = puzzles.slice(1, 5));
+      .subscribe(puzzles => this.puzzles = puzzles.slice(0, 4));
   }
 }
