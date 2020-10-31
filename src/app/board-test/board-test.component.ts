@@ -15,6 +15,7 @@ export class BoardTestComponent implements OnInit {
   private render_ctx: CanvasRenderingContext2D;
 
   private board: Board;
+  public puzzleId: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -25,6 +26,7 @@ export class BoardTestComponent implements OnInit {
     this.render_ctx = this.canvasbg.nativeElement.getContext('2d');
 
     const id = +this.route.snapshot.paramMap.get('id');
+    this.puzzleId = id;
     this.puzzleService.getPuzzle(id).subscribe(puzzle => {
       this.board = new Board(puzzle);
       this.render();

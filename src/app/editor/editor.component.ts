@@ -1,3 +1,5 @@
+import { PuzzleService } from '../puzzle.service';
+import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { EditBoard } from '../edit-board';
@@ -16,6 +18,8 @@ export class EditorComponent implements OnInit {
   editPositionY: number;
   menuPositionX: string = '0px';
   menuPositionY: string = '0px';
+  editWidth: string;
+  editHeight: string;
   editColor: string;
   editDirection: string;
   board: EditBoard = new EditBoard({ id: null, title: 'Editor', s_representation: '?', width: 10, height: 10, hints: [] });
@@ -23,28 +27,48 @@ export class EditorComponent implements OnInit {
 
   private render_ctx: CanvasRenderingContext2D;
 
-  constructor(private sanitizer: DomSanitizer) {
+  constructor(
+    private sanitizer: DomSanitizer,
+    private route: ActivatedRoute,
+    private puzzleService: PuzzleService)
+  {
     this.updatePuzzleDownload();
   }
 
   ngOnInit(): void {
     this.render_ctx = this.canvasbg.nativeElement.getContext('2d');
-    this.render();
-    this.canvasbg.nativeElement.addEventListener('mousedown', event => this.handleMousedown(event));
+
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id == null) {
+      this.editWidth = String(this.board.width);
+      this.editHeight = String(this.board.height);
+      this.render();
+      this.canvasbg.nativeElement.addEventListener('mousedown', event => this.handleMousedown(event));
+    }
+    else {
+      this.puzzleService.getPuzzle(+id).subscribe(puzzle => {
+        this.board = new EditBoard(puzzle);
+        this.updatePuzzleDownload();
+        this.editWidth = String(this.board.width);
+        this.editHeight = String(this.board.height);
+        this.render();
+        this.canvasbg.nativeElement.addEventListener('mousedown', event => this.handleMousedown(event));
+      });
+    }
   }
 
   updatePuzzleDownload(): void {
     this.puzzleDownload = this.sanitizer.bypassSecurityTrustUrl(`data:text/plain;charset=utf-8,${encodeURIComponent(JSON.stringify(this.board.toPuzzle()))}`);
   }
 
-  updateWidth(width: number): void {
-    this.board.updateWidth(width);
+  updateWidth(): void {
+    this.board.updateWidth(+this.editWidth);
     this.render();
     this.updatePuzzleDownload();
   }
 
-  updateHeight(height: number): void {
-    this.board.updateHeight(height);
+  updateHeight(): void {
+    this.board.updateHeight(+this.editHeight);
     this.render();
     this.updatePuzzleDownload();
   }

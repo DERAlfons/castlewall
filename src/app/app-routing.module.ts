@@ -15,7 +15,8 @@ const routes: Routes = [
   { path: 'puzzles', component: PuzzlesComponent },
   { path: 'detail/:id', component: PuzzleDetailComponent },
   { path: 'board/:id', component: BoardTestComponent },
-  { path: 'editor', component: EditorComponent }
+  { path: 'editor', component: EditorComponent, pathMatch: 'full' },
+  { path: 'editor/:id', component: EditorComponent }
 ];
 
 @NgModule({

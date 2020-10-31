@@ -8,3 +8,5 @@
 <br>
 <input type="file" #wallsFile />
 <button (click)="loadWalls(wallsFile.files[0])">Load walls</button>
+<br>
+<a routerLink="/editor/{{puzzleId}}">Edit</a>
