@@ -1,10 +1,49 @@
-<h1>{{title}} app</h1>
+<div id="wrapper">
 
-<nav>
-    <a routerLink="/dashboard">Dashboard</a>
-    <a routerLink="/puzzles">Puzzles</a>
-</nav>
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-<router-outlet></router-outlet>
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <div class="sidebar-brand-text mx-3">Castle Wall</div>
+        </a>
 
-<app-messages></app-messages>
+        <hr class="sidebar-divider my-0">
+
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/dashboard">
+                <span>Dashboard</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/puzzles">
+                <span>Puzzles</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/editor">
+                <span>Editor</span>
+            </a>
+        </li>
+
+    </ul>
+
+    <div class="d-flex flex-column" id="content-wrapper">
+
+        <div id="content">
+
+            <div class="container-fluid">
+
+                <h1 class="h3 mb-4 text-gray-800">{{title}} app</h1>
+
+                <router-outlet></router-outlet>
+
+                <app-messages></app-messages>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
