@@ -24,15 +24,6 @@ export class PuzzlesComponent implements OnInit {
 
   puzzles: Puzzle[];
 
-  add(title: string, s_representation: string): void {
-    title = title.trim();
-    if (!title) { return; }
-    this.puzzleService.addPuzzle({ title, s_representation } as Puzzle)
-      .subscribe(puzzle => {
-        this.puzzles.push(puzzle);
-      });
-  }
-
   delete(puzzle: Puzzle): void {
     this.puzzles = this.puzzles.filter(p => p !== puzzle);
     this.puzzleService.deletePuzzle(puzzle).subscribe();

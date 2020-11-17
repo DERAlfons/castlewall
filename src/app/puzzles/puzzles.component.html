@@ -27,15 +27,3 @@
         </div>
     </div>
 </div>
-
-<div>
-    <label>Puzzle title:
-        <input #puzzleTitle />
-    </label>
-    <label>Puzzle serialized representation:
-        <input #puzzleSRep />
-    </label>
-    <button (click)="add(puzzleTitle.value, puzzleSRep.value); puzzleTitle.value=''; puzzleSRep.value=''">
-        add
-    </button>
-</div>

@@ -184,4 +184,12 @@ export class EditorComponent implements OnInit {
   closeHintMenu(): void {
     this.menuActive = false;
   }
+
+  add(title: string): void {
+    title = title.trim();
+    if (!title) { return; }
+    let puzzle = this.board.toPuzzle();
+    puzzle.title = title;
+    this.puzzleService.addPuzzle(puzzle).subscribe();
+  }
 }
