@@ -6,12 +6,10 @@
     <div *ngFor="let puzzle of puzzles" class="col-xl-3 col-md-6 mb-4">
         <a routerLink="/board/{{puzzle.id}}">
             <div class="card border-left-primary shadow h-100 py-2">
-            <div class="card-body">
-                <div class="h5 mb-0 font-weight-bold text-gray-800">{{puzzle.title}}</div>
-            </div>
+                <div class="card-body">
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{puzzle.title}}</div>
+                </div>
             </div>
         </a>
     </div>
 </div>
-
-<app-puzzle-search></app-puzzle-search>
