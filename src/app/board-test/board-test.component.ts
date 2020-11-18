@@ -16,6 +16,7 @@ export class BoardTestComponent implements OnInit {
 
   private board: Board;
   public puzzleId: number;
+  public puzzleTitle: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -28,6 +29,7 @@ export class BoardTestComponent implements OnInit {
     const id = +this.route.snapshot.paramMap.get('id');
     this.puzzleId = id;
     this.puzzleService.getPuzzle(id).subscribe(puzzle => {
+      this.puzzleTitle = puzzle.title;
       this.board = new Board(puzzle);
       this.render();
       this.canvasbg.nativeElement.addEventListener('mousedown', event => this.handleMousedown(event));

@@ -1,12 +1,39 @@
-<canvas #canvasbg width="600" height="300"></canvas>
-<canvas #canvasfg width="600" height="300"></canvas>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">{{puzzleTitle}}</h1>
+</div>
+
+<div class="col">
+<div class="card shadow h-100 py-2">
+<div class="card-body">
+  <canvas #canvasbg width="600" height="300"></canvas>
+  <canvas #canvasfg width="600" height="300"></canvas>
+</div>
+</div>
 <br>
-<button (click)="checkBtn()">Check</button>
-<br>
-<input type="file" #puzzleFile />
-<button (click)="loadFile(puzzleFile.files[0])">Load puzzle file</button>
-<br>
-<input type="file" #wallsFile />
-<button (click)="loadWalls(wallsFile.files[0])">Load walls</button>
-<br>
-<a routerLink="/editor/{{puzzleId}}">Edit</a>
+
+<div class="row">
+<div class="col-xl-3 col-md-6 mb-4">
+<div class="card shadow h-100 py-2">
+<div class="card-body">
+  <button (click)="checkBtn()">Check</button>
+  <br>
+  <a routerLink="/editor/{{puzzleId}}">Edit</a>
+</div>
+</div>
+</div>
+
+<div class="col-xl-3 col-md-6 mb-4">
+<div class="card shadow h-100 py-2">
+<div class="card-body">
+  <input type="file" #puzzleFile />
+  <br>
+  <button (click)="loadFile(puzzleFile.files[0])">Load puzzle file</button>
+  <br>
+  <input type="file" #wallsFile />
+  <br>
+  <button (click)="loadWalls(wallsFile.files[0])">Load walls</button>
+</div>
+</div>
+</div>
+</div>
+</div>

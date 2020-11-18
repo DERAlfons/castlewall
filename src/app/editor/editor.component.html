@@ -1,41 +1,70 @@
-<input type="number" id="width" [(ngModel)]="editWidth" value="10" min="2" (change)="updateWidth()" />
-<label for="width">Width</label>
-<input type="number" id="height" [(ngModel)]="editHeight" value="10" min="2" (change)="updateHeight()" />
-<label for="height">Height</label>
-<input #puzzleTitle id="title" value="" />
-<label for="title">Title</label>
-<br>
-<div class="puzzle-editor">
-  <canvas #canvasbg width="600" height="300"></canvas>
-  <div class="hint-menu" *ngIf="menuActive" [style.left]="menuPositionX" [style.top]="menuPositionY">
-    <input type="radio" id="black" name="color" [(ngModel)]="editColor" value="black" />
-    <label for="black">Black</label>
-    <input type="radio" id="white" name="color" [(ngModel)]="editColor" value="white" />
-    <label for="white">White</label>
-    <input type="radio" id="grey" name="color" [(ngModel)]="editColor" value="grey" />
-    <label for="grey">Grey</label>
-    <input type="radio" id="nocolor" name="color" [(ngModel)]="editColor" value="nocolor" />
-    <label for="nocolor">None</label>
-    <br>
-    <input type="radio" name="direction" id="left" [(ngModel)]="editDirection" value="left" />
-    <label for="left">Left</label>
-    <input type="radio" name="direction" id="up" [(ngModel)]="editDirection" value="up" />
-    <label for="up">Up</label>
-    <input type="radio" name="direction" id="right" [(ngModel)]="editDirection" value="right" />
-    <label for="right">Right</label>
-    <input type="radio" name="direction" id="down" [(ngModel)]="editDirection" value="down" />
-    <label for="down">Down</label>
-    <input type="radio" name="direction" id="nodirection" [(ngModel)]="editDirection" value="nodirection" />
-    <label for="nodirection">None</label>
-    <br>
-    <input type="number" #walls id="walls" value="0" min="0" max="10" />
-    <label for="walls">Walls</label>
-    <br>
-    <button (click)="addHint(+walls.value)">Add</button>
-    <button (click)="closeHintMenu()">Cancel</button>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Puzzle Editor</h1>
+</div>
+
+<div class="col">
+<div class="card shadow h-100 py-2">
+<div class="card-body">
+  <div class="puzzle-editor">
+    <canvas #canvasbg width="600" height="300"></canvas>
+    <div class="hint-menu" *ngIf="menuActive" [style.left]="menuPositionX" [style.top]="menuPositionY">
+      <input type="radio" id="black" name="color" [(ngModel)]="editColor" value="black" />
+      <label for="black">Black</label>
+      <input type="radio" id="white" name="color" [(ngModel)]="editColor" value="white" />
+      <label for="white">White</label>
+      <input type="radio" id="grey" name="color" [(ngModel)]="editColor" value="grey" />
+      <label for="grey">Grey</label>
+      <input type="radio" id="nocolor" name="color" [(ngModel)]="editColor" value="nocolor" />
+      <label for="nocolor">None</label>
+      <br>
+      <input type="radio" name="direction" id="left" [(ngModel)]="editDirection" value="left" />
+      <label for="left">Left</label>
+      <input type="radio" name="direction" id="up" [(ngModel)]="editDirection" value="up" />
+      <label for="up">Up</label>
+      <input type="radio" name="direction" id="right" [(ngModel)]="editDirection" value="right" />
+      <label for="right">Right</label>
+      <input type="radio" name="direction" id="down" [(ngModel)]="editDirection" value="down" />
+      <label for="down">Down</label>
+      <input type="radio" name="direction" id="nodirection" [(ngModel)]="editDirection" value="nodirection" />
+      <label for="nodirection">None</label>
+      <br>
+      <input type="number" #walls id="walls" value="0" min="0" max="10" />
+      <label for="walls">Walls</label>
+      <br>
+      <button (click)="addHint(+walls.value)">Add</button>
+      <button (click)="closeHintMenu()">Cancel</button>
+    </div>
   </div>
 </div>
-<button (click)="add(puzzleTitle.value); puzzleTitle.value='';">
-    Add Puzzle
-</button>
-<a [href]="puzzleDownload" download="puzzle.json">Save Puzzle</a>
+</div>
+<br>
+
+<div class="row">
+<div class="col-xl-3 col-md-6 mb-4">
+<div class="card shadow h-100 py-2">
+<div class="card-body">
+  <label for="title">Title</label>
+  <input #puzzleTitle id="title" value="" />
+  <br>
+  <label for="width">Width</label>
+  <input type="number" id="width" [(ngModel)]="editWidth" value="10" min="2" (change)="updateWidth()" />
+  <br>
+  <label for="height">Height</label>
+  <input type="number" id="height" [(ngModel)]="editHeight" value="10" min="2" (change)="updateHeight()" />
+</div>
+</div>
+</div>
+
+<div class="col-xl-3 col-md-6 mb-4">
+<div class="card shadow h-100 py-2">
+<div class="card-body">
+  <button (click)="add(puzzleTitle.value); puzzleTitle.value='';">
+      Add Puzzle
+  </button>
+  <br>
+  <a [href]="puzzleDownload" download="puzzle.json">Save Puzzle</a>
+</div>
+</div>
+</div>
+</div>
+</div>
