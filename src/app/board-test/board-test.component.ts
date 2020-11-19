@@ -83,9 +83,6 @@ export class BoardTestComponent implements OnInit {
   render(): void {
     this.render_ctx.clearRect(0, 0, this.canvasbg.nativeElement.width, this.canvasbg.nativeElement.height);
 
-    this.render_ctx.fillStyle = 'red';
-    this.render_ctx.fillRect(10, 10, 20, 20);
-
     for (let i = 0; i <= this.board.width; i++) {
       this.render_ctx.beginPath();
       this.render_ctx.strokeStyle = 'black';

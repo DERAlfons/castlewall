@@ -15,8 +15,8 @@ canvas {
 
   position: absolute;
   z-index: 1;
-  margin-top: 5px;
-  margin-left: -148px;
+  margin-top: 8px;
+  margin-left: -124px;
 }
 
 .puzzle-editor .hint-menu::after {
