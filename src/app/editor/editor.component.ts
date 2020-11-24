@@ -28,6 +28,7 @@ export class EditorComponent implements OnInit {
   puzzleDownload: SafeResourceUrl;
 
   private boardCanvas: BoardCanvas;
+  private cellSize: number = 40;
 
   constructor(
     private sanitizer: DomSanitizer,
@@ -77,13 +78,13 @@ export class EditorComponent implements OnInit {
 
   handleMousedown(event: MouseEvent): void {
     console.log('canvas mousedown');
-    let px = Math.floor(event.offsetX / 20) - 1;
-    let py = Math.floor(event.offsetY / 20) - 1;
+    let px = Math.floor(event.offsetX / this.cellSize) - 1;
+    let py = Math.floor(event.offsetY / this.cellSize) - 1;
     if (px >= 0 && px < this.board.width && py >= 0 && py < this.board.height) {
       this.editPositionX = px;
       this.editPositionY = py;
-      this.menuPositionX = `${30 + 20 * px}px`;
-      this.menuPositionY = `${30 + 20 * py}px`;
+      this.menuPositionX = `${this.cellSize + this.cellSize / 2 + this.cellSize * px}px`;
+      this.menuPositionY = `${this.cellSize + this.cellSize / 2 + this.cellSize * py}px`;
       this.menuActive = true;
     }
   }

@@ -14,6 +14,7 @@ export class BoardTestComponent implements OnInit {
   @ViewChild('canvasbg', { static: true })
   canvasbg: ElementRef<HTMLCanvasElement>;
   private boardCanvas: BoardCanvas;
+  private cellSize: number = 40;
 
   private board: Board;
   public puzzleId: number;
@@ -91,13 +92,13 @@ export class BoardTestComponent implements OnInit {
   }
 
   handleMousedown(event: MouseEvent): void {
-    let px = Math.floor(event.offsetX / 20);
-    let py = Math.floor(event.offsetY / 20);
-    let dx = event.offsetX % 20;
-    let dy = event.offsetY % 20;
+    let px = Math.floor(event.offsetX / this.cellSize);
+    let py = Math.floor(event.offsetY / this.cellSize);
+    let dx = event.offsetX % this.cellSize;
+    let dy = event.offsetY % this.cellSize;
 
     if (dx > dy) {
-      if (dx > 20 - dy) {
+      if (dx > this.cellSize - dy) {
         this.board.update_wall_h(py - 1, px - 1);
         this.boardCanvas.render(this.board);
       }
@@ -107,7 +108,7 @@ export class BoardTestComponent implements OnInit {
       }
     }
     else {
-      if (dx > 20 - dy) {
+      if (dx > this.cellSize - dy) {
         this.board.update_wall_v(px - 1, py - 1);
         this.boardCanvas.render(this.board);
       }

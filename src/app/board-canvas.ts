@@ -7,6 +7,7 @@ export class BoardCanvas {
   private render_ctx: CanvasRenderingContext2D;
   private height: number;
   private width: number;
+  private cellSize: number = 40;
 
   constructor(canvas: ElementRef<HTMLCanvasElement>) {
     this.render_ctx = canvas.nativeElement.getContext('2d');
@@ -21,8 +22,8 @@ export class BoardCanvas {
       this.render_ctx.beginPath();
       this.render_ctx.strokeStyle = 'black';
       this.render_ctx.lineWidth = 2;
-      this.render_ctx.moveTo(20 + i * 20, 20);
-      this.render_ctx.lineTo(20 + i * 20, 20 + board.height * 20);
+      this.render_ctx.moveTo(this.cellSize + i * this.cellSize, this.cellSize);
+      this.render_ctx.lineTo(this.cellSize + i * this.cellSize, this.cellSize + board.height * this.cellSize);
       this.render_ctx.stroke();
       this.render_ctx.closePath();
     }
@@ -30,8 +31,8 @@ export class BoardCanvas {
       this.render_ctx.beginPath();
       this.render_ctx.strokeStyle = 'black';
       this.render_ctx.lineWidth = 2;
-      this.render_ctx.moveTo(20, 20 + i * 20);
-      this.render_ctx.lineTo(20 + board.width * 20, 20 + i * 20);
+      this.render_ctx.moveTo(this.cellSize, this.cellSize + i * this.cellSize);
+      this.render_ctx.lineTo(this.cellSize + board.width * this.cellSize, this.cellSize + i * this.cellSize);
       this.render_ctx.stroke();
       this.render_ctx.closePath();
     }
@@ -40,7 +41,7 @@ export class BoardCanvas {
       for (let j = 0; j < board.width; j++) {
         if (board.cboard[i][j]) {
           this.render_ctx.fillStyle = board.cboard[i][j].color;
-          this.render_ctx.fillRect(20 + j * 20, 20 + i * 20, 20, 20);
+          this.render_ctx.fillRect(this.cellSize + j * this.cellSize, this.cellSize + i * this.cellSize, this.cellSize, this.cellSize);
           if (board.cboard[i][j].direction) {
             if (board.cboard[i][j].color == 'black') {
               this.render_ctx.fillStyle = 'white';
@@ -48,12 +49,12 @@ export class BoardCanvas {
             else {
               this.render_ctx.fillStyle = 'black';
             }
-            this.render_ctx.font = '10px Arial';
-            this.render_ctx.fillText(`${board.cboard[i][j].walls}${board.cboard[i][j].direction[0]}`, 25 + j * 20, 35 + i * 20);
+            this.render_ctx.font = `${this.cellSize / 2}px Arial`;
+            this.render_ctx.fillText(`${board.cboard[i][j].walls}${board.cboard[i][j].direction[0]}`, this.cellSize + this.cellSize / 4 + j * this.cellSize, 2 * this.cellSize - this.cellSize / 4 + i * this.cellSize);
           }
           this.render_ctx.strokeStyle = 'black';
           this.render_ctx.lineWidth = 4;
-          this.render_ctx.strokeRect(20 + j * 20, 20 + i * 20, 20, 20);
+          this.render_ctx.strokeRect(this.cellSize + j * this.cellSize, this.cellSize + i * this.cellSize, this.cellSize, this.cellSize);
         }
       }
     }
@@ -78,8 +79,8 @@ export class BoardCanvas {
     this.render_ctx.beginPath();
     this.render_ctx.strokeStyle = 'green';
     this.render_ctx.lineWidth = 2;
-    this.render_ctx.moveTo(10 + x1 * 20, 10 + y1 * 20);
-    this.render_ctx.lineTo(10 + x2 * 20, 10 + y2 * 20);
+    this.render_ctx.moveTo(this.cellSize / 2 + x1 * this.cellSize, this.cellSize / 2 + y1 * this.cellSize);
+    this.render_ctx.lineTo(this.cellSize / 2 + x2 * this.cellSize, this.cellSize / 2 + y2 * this.cellSize);
     this.render_ctx.stroke();
     this.render_ctx.closePath();
   }
