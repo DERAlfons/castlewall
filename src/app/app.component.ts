@@ -8,6 +8,6 @@ import { environment } from '../environments/environment';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Castle Walls';
-  production = environment.production;
+  public title: string = 'Castle Wall';
+  public production: boolean = environment.production;
 }
