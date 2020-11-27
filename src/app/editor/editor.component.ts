@@ -15,6 +15,8 @@ export class EditorComponent implements OnInit {
 
   @ViewChild('canvasbg', { static: true })
   canvasbg: ElementRef<HTMLCanvasElement>;
+  canvasWidth: number = 800;
+  canvasHeight: number = 640;
   menuActive: boolean = false;
   editPositionX: number;
   editPositionY: number;
@@ -45,7 +47,9 @@ export class EditorComponent implements OnInit {
     if (id == null) {
       this.editWidth = String(this.board.width);
       this.editHeight = String(this.board.height);
-      this.boardCanvas.render(this.board);
+      this.canvasWidth = (this.board.width + 2) * this.cellSize;
+      this.canvasHeight = (this.board.width + 2) * this.cellSize;
+      requestAnimationFrame(() => this.boardCanvas.render(this.board));
       this.canvasbg.nativeElement.addEventListener('mousedown', event => this.handleMousedown(event));
     }
     else {
@@ -54,7 +58,9 @@ export class EditorComponent implements OnInit {
         this.updatePuzzleDownload();
         this.editWidth = String(this.board.width);
         this.editHeight = String(this.board.height);
-        this.boardCanvas.render(this.board);
+        this.canvasWidth = (this.board.width + 2) * this.cellSize;
+        this.canvasHeight = (this.board.height + 2) * this.cellSize;
+        requestAnimationFrame(() => this.boardCanvas.render(this.board));
         this.canvasbg.nativeElement.addEventListener('mousedown', event => this.handleMousedown(event));
       });
     }
@@ -66,13 +72,15 @@ export class EditorComponent implements OnInit {
 
   updateWidth(): void {
     this.board.updateWidth(+this.editWidth);
-    this.boardCanvas.render(this.board);
+    this.canvasWidth = (this.board.width + 2) * this.cellSize;
+    requestAnimationFrame(() => this.boardCanvas.render(this.board));
     this.updatePuzzleDownload();
   }
 
   updateHeight(): void {
     this.board.updateHeight(+this.editHeight);
-    this.boardCanvas.render(this.board);
+    this.canvasHeight = (this.board.height + 2) * this.cellSize;
+    requestAnimationFrame(() => this.boardCanvas.render(this.board));
     this.updatePuzzleDownload();
   }
 

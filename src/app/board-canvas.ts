@@ -4,19 +4,17 @@ import { Board } from './board';
 
 export class BoardCanvas {
 
+  private htmlCanvas: ElementRef<HTMLCanvasElement>;
   private render_ctx: CanvasRenderingContext2D;
-  private height: number;
-  private width: number;
   private cellSize: number = 40;
 
   constructor(canvas: ElementRef<HTMLCanvasElement>) {
+    this.htmlCanvas = canvas;
     this.render_ctx = canvas.nativeElement.getContext('2d');
-    this.height = canvas.nativeElement.height;
-    this.width = canvas.nativeElement.width;
   }
 
   render(board: Board): void {
-    this.render_ctx.clearRect(0, 0, this.width, this.height);
+    this.render_ctx.clearRect(0, 0, this.htmlCanvas.nativeElement.width, this.htmlCanvas.nativeElement.height);
 
     for (let i = 0; i <= board.width; i++) {
       this.render_ctx.beginPath();

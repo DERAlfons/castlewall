@@ -13,6 +13,8 @@ import { BoardCanvas } from '../board-canvas';
 export class BoardTestComponent implements OnInit {
   @ViewChild('canvasbg', { static: true })
   canvasbg: ElementRef<HTMLCanvasElement>;
+  canvasWidth: number = 800;
+  canvasHeight: number = 640;
   private boardCanvas: BoardCanvas;
   private cellSize: number = 40;
 
@@ -33,7 +35,9 @@ export class BoardTestComponent implements OnInit {
     this.puzzleService.getPuzzle(id).subscribe(puzzle => {
       this.puzzleTitle = puzzle.title;
       this.board = new Board(puzzle);
-      this.boardCanvas.render(this.board);
+      this.canvasWidth = (this.board.width + 2) * this.cellSize;
+      this.canvasHeight = (this.board.height + 2) * this.cellSize;
+      requestAnimationFrame(() => this.boardCanvas.render(this.board));
       this.canvasbg.nativeElement.addEventListener('mousedown', event => this.handleMousedown(event));
     });
   }
@@ -42,7 +46,9 @@ export class BoardTestComponent implements OnInit {
     let reader = new FileReader();
     reader.onload = (_) => {
       this.board = new Board(JSON.parse(reader.result as string));
-      this.boardCanvas.render(this.board);
+      this.canvasWidth = (this.board.width + 2) * this.cellSize;
+      this.canvasHeight = (this.board.height + 2) * this.cellSize;
+      requestAnimationFrame(() => this.boardCanvas.render(this.board));
     };
     reader.readAsText(puzzleFile);
   }
