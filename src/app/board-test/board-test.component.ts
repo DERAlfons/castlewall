@@ -17,6 +17,7 @@ export class BoardTestComponent implements OnInit {
   canvasHeight: number = 640;
   private boardCanvas: BoardCanvas;
   private cellSize: number = 40;
+  private gridOffset: number = 20;
 
   private board: Board;
   public puzzleId: number;
@@ -35,8 +36,8 @@ export class BoardTestComponent implements OnInit {
     this.puzzleService.getPuzzle(id).subscribe(puzzle => {
       this.puzzleTitle = puzzle.title;
       this.board = new Board(puzzle);
-      this.canvasWidth = (this.board.width + 2) * this.cellSize;
-      this.canvasHeight = (this.board.height + 2) * this.cellSize;
+      this.canvasWidth = this.board.width * this.cellSize + 2 * this.gridOffset;
+      this.canvasHeight = this.board.height * this.cellSize + 2 * this.gridOffset;
       requestAnimationFrame(() => this.boardCanvas.render(this.board));
       this.canvasbg.nativeElement.addEventListener('mousedown', event => this.handleMousedown(event));
     });
@@ -46,8 +47,8 @@ export class BoardTestComponent implements OnInit {
     let reader = new FileReader();
     reader.onload = (_) => {
       this.board = new Board(JSON.parse(reader.result as string));
-      this.canvasWidth = (this.board.width + 2) * this.cellSize;
-      this.canvasHeight = (this.board.height + 2) * this.cellSize;
+      this.canvasWidth = this.board.width * this.cellSize + 2 * this.gridOffset;
+      this.canvasHeight = this.board.height * this.cellSize + 2 * this.gridOffset;
       requestAnimationFrame(() => this.boardCanvas.render(this.board));
     };
     reader.readAsText(puzzleFile);
@@ -98,28 +99,28 @@ export class BoardTestComponent implements OnInit {
   }
 
   handleMousedown(event: MouseEvent): void {
-    let px = Math.floor(event.offsetX / this.cellSize);
-    let py = Math.floor(event.offsetY / this.cellSize);
-    let dx = event.offsetX % this.cellSize;
-    let dy = event.offsetY % this.cellSize;
+    let px = Math.floor((event.offsetX - this.gridOffset) / this.cellSize);
+    let py = Math.floor((event.offsetY - this.gridOffset) / this.cellSize);
+    let dx = (event.offsetX - this.gridOffset) % this.cellSize;
+    let dy = (event.offsetY - this.gridOffset) % this.cellSize;
 
     if (dx > dy) {
       if (dx > this.cellSize - dy) {
-        this.board.update_wall_h(py - 1, px - 1);
+        this.board.update_wall_h(py, px);
         this.boardCanvas.render(this.board);
       }
       else {
-        this.board.update_wall_v(px - 1, py - 2);
+        this.board.update_wall_v(px, py - 1);
         this.boardCanvas.render(this.board);
       }
     }
     else {
       if (dx > this.cellSize - dy) {
-        this.board.update_wall_v(px - 1, py - 1);
+        this.board.update_wall_v(px, py);
         this.boardCanvas.render(this.board);
       }
       else {
-        this.board.update_wall_h(py - 1, px - 2);
+        this.board.update_wall_h(py, px - 1);
         this.boardCanvas.render(this.board);
       }
     }

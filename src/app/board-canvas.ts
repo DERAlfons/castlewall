@@ -7,6 +7,7 @@ export class BoardCanvas {
   private htmlCanvas: ElementRef<HTMLCanvasElement>;
   private render_ctx: CanvasRenderingContext2D;
   private cellSize: number = 40;
+  private gridOffset: number = 20;
 
   constructor(canvas: ElementRef<HTMLCanvasElement>) {
     this.htmlCanvas = canvas;
@@ -20,8 +21,8 @@ export class BoardCanvas {
       this.render_ctx.beginPath();
       this.render_ctx.strokeStyle = 'black';
       this.render_ctx.lineWidth = 2;
-      this.render_ctx.moveTo(this.cellSize + i * this.cellSize, this.cellSize);
-      this.render_ctx.lineTo(this.cellSize + i * this.cellSize, this.cellSize + board.height * this.cellSize);
+      this.render_ctx.moveTo(this.gridOffset + i * this.cellSize, this.gridOffset);
+      this.render_ctx.lineTo(this.gridOffset + i * this.cellSize, this.gridOffset + board.height * this.cellSize);
       this.render_ctx.stroke();
       this.render_ctx.closePath();
     }
@@ -29,8 +30,8 @@ export class BoardCanvas {
       this.render_ctx.beginPath();
       this.render_ctx.strokeStyle = 'black';
       this.render_ctx.lineWidth = 2;
-      this.render_ctx.moveTo(this.cellSize, this.cellSize + i * this.cellSize);
-      this.render_ctx.lineTo(this.cellSize + board.width * this.cellSize, this.cellSize + i * this.cellSize);
+      this.render_ctx.moveTo(this.gridOffset, this.gridOffset + i * this.cellSize);
+      this.render_ctx.lineTo(this.gridOffset + board.width * this.cellSize, this.gridOffset + i * this.cellSize);
       this.render_ctx.stroke();
       this.render_ctx.closePath();
     }
@@ -39,7 +40,7 @@ export class BoardCanvas {
       for (let j = 0; j < board.width; j++) {
         if (board.cboard[i][j]) {
           this.render_ctx.fillStyle = board.cboard[i][j].color;
-          this.render_ctx.fillRect(this.cellSize + j * this.cellSize, this.cellSize + i * this.cellSize, this.cellSize, this.cellSize);
+          this.render_ctx.fillRect(this.gridOffset + j * this.cellSize, this.gridOffset + i * this.cellSize, this.cellSize, this.cellSize);
           if (board.cboard[i][j].direction) {
             if (board.cboard[i][j].color == 'black') {
               this.render_ctx.fillStyle = 'white';
@@ -48,11 +49,11 @@ export class BoardCanvas {
               this.render_ctx.fillStyle = 'black';
             }
             this.render_ctx.font = `${this.cellSize / 2}px Arial`;
-            this.render_ctx.fillText(`${board.cboard[i][j].walls}${board.cboard[i][j].direction[0]}`, this.cellSize + this.cellSize / 4 + j * this.cellSize, 2 * this.cellSize - this.cellSize / 4 + i * this.cellSize);
+            this.render_ctx.fillText(`${board.cboard[i][j].walls}${board.cboard[i][j].direction[0]}`, this.gridOffset + j * this.cellSize + this.cellSize / 4, this.gridOffset + i * this.cellSize + 3 * this.cellSize / 4);
           }
           this.render_ctx.strokeStyle = 'black';
           this.render_ctx.lineWidth = 4;
-          this.render_ctx.strokeRect(this.cellSize + j * this.cellSize, this.cellSize + i * this.cellSize, this.cellSize, this.cellSize);
+          this.render_ctx.strokeRect(this.gridOffset + j * this.cellSize, this.gridOffset + i * this.cellSize, this.cellSize, this.cellSize);
         }
       }
     }
@@ -60,14 +61,14 @@ export class BoardCanvas {
     for (let i = 0; i < board.width; i++) {
       for (let j = 0; j < board.height - 1; j++) {
         if (board.vboard[i][j] == 'wall') {
-          this.connect(i + 1, j + 1, i + 1, j + 2);
+          this.connect(i, j, i, j + 1);
         }
       }
     }
     for (let i = 0; i < board.height; i++) {
       for (let j = 0; j < board.width - 1; j++) {
         if (board.hboard[i][j] == 'wall') {
-          this.connect(j + 1, i + 1, j + 2, i + 1);
+          this.connect(j, i, j + 1, i);
         }
       }
     }
@@ -77,8 +78,8 @@ export class BoardCanvas {
     this.render_ctx.beginPath();
     this.render_ctx.strokeStyle = 'green';
     this.render_ctx.lineWidth = 2;
-    this.render_ctx.moveTo(this.cellSize / 2 + x1 * this.cellSize, this.cellSize / 2 + y1 * this.cellSize);
-    this.render_ctx.lineTo(this.cellSize / 2 + x2 * this.cellSize, this.cellSize / 2 + y2 * this.cellSize);
+    this.render_ctx.moveTo(this.gridOffset + x1 * this.cellSize + this.cellSize / 2, this.gridOffset + y1 * this.cellSize + this.cellSize / 2);
+    this.render_ctx.lineTo(this.gridOffset + x2 * this.cellSize + this.cellSize / 2, this.gridOffset + y2 * this.cellSize + this.cellSize / 2);
     this.render_ctx.stroke();
     this.render_ctx.closePath();
   }
