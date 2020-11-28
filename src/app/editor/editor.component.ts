@@ -15,6 +15,8 @@ export class EditorComponent implements OnInit {
 
   @ViewChild('canvasbg', { static: true })
   canvasbg: ElementRef<HTMLCanvasElement>;
+  canvasWidth: number = 800;
+  canvasHeight: number = 640;
   menuActive: boolean = false;
   editPositionX: number;
   editPositionY: number;
@@ -29,6 +31,7 @@ export class EditorComponent implements OnInit {
 
   private boardCanvas: BoardCanvas;
   private cellSize: number = 40;
+  private gridOffset: number = 20;
 
   constructor(
     private sanitizer: DomSanitizer,
@@ -45,7 +48,9 @@ export class EditorComponent implements OnInit {
     if (id == null) {
       this.editWidth = String(this.board.width);
       this.editHeight = String(this.board.height);
-      this.boardCanvas.render(this.board);
+      this.canvasWidth = this.board.width * this.cellSize + 2 * this.gridOffset;
+      this.canvasHeight = this.board.width * this.cellSize + 2 * this.gridOffset;
+      requestAnimationFrame(() => this.boardCanvas.render(this.board));
       this.canvasbg.nativeElement.addEventListener('mousedown', event => this.handleMousedown(event));
     }
     else {
@@ -54,7 +59,9 @@ export class EditorComponent implements OnInit {
         this.updatePuzzleDownload();
         this.editWidth = String(this.board.width);
         this.editHeight = String(this.board.height);
-        this.boardCanvas.render(this.board);
+        this.canvasWidth = this.board.width * this.cellSize + 2 * this.gridOffset;
+        this.canvasHeight = this.board.height * this.cellSize + 2 * this.gridOffset;
+        requestAnimationFrame(() => this.boardCanvas.render(this.board));
         this.canvasbg.nativeElement.addEventListener('mousedown', event => this.handleMousedown(event));
       });
     }
@@ -66,25 +73,27 @@ export class EditorComponent implements OnInit {
 
   updateWidth(): void {
     this.board.updateWidth(+this.editWidth);
-    this.boardCanvas.render(this.board);
+    this.canvasWidth = this.board.width * this.cellSize + 2 * this.gridOffset;
+    requestAnimationFrame(() => this.boardCanvas.render(this.board));
     this.updatePuzzleDownload();
   }
 
   updateHeight(): void {
     this.board.updateHeight(+this.editHeight);
-    this.boardCanvas.render(this.board);
+    this.canvasHeight = this.board.height * this.cellSize + 2 * this.gridOffset;
+    requestAnimationFrame(() => this.boardCanvas.render(this.board));
     this.updatePuzzleDownload();
   }
 
   handleMousedown(event: MouseEvent): void {
     console.log('canvas mousedown');
-    let px = Math.floor(event.offsetX / this.cellSize) - 1;
-    let py = Math.floor(event.offsetY / this.cellSize) - 1;
+    let px = Math.floor((event.offsetX - this.gridOffset) / this.cellSize);
+    let py = Math.floor((event.offsetY - this.gridOffset) / this.cellSize);
     if (px >= 0 && px < this.board.width && py >= 0 && py < this.board.height) {
       this.editPositionX = px;
       this.editPositionY = py;
-      this.menuPositionX = `${this.cellSize + this.cellSize / 2 + this.cellSize * px}px`;
-      this.menuPositionY = `${this.cellSize + this.cellSize / 2 + this.cellSize * py}px`;
+      this.menuPositionX = `${this.gridOffset + this.cellSize * px + this.cellSize / 2}px`;
+      this.menuPositionY = `${this.gridOffset + this.cellSize * py + this.cellSize / 2}px`;
       this.menuActive = true;
     }
   }
