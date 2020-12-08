@@ -8,8 +8,8 @@ export class BoardCanvas {
   private render_ctx: CanvasRenderingContext2D;
   private cellSize: number = 40;
   private gridOffset: number = 20;
-  private arrow_black;
-  private arrow_white;
+  private arrow_black: HTMLImageElement;
+  private arrow_white: HTMLImageElement;
 
   constructor(canvas: ElementRef<HTMLCanvasElement>) {
     this.arrow_black = new Image();
@@ -62,41 +62,37 @@ export class BoardCanvas {
             let textMeasures = this.render_ctx.measureText(`${board.cboard[i][j].walls}`);
             let textWidth = textMeasures.width;
             let textHeight = textMeasures.actualBoundingBoxAscent;
-            let arrowWidth: number;
-            let arrowHeight: number;
-            let arrowX: number;
-            let arrowY: number;
             let textX: number;
             let textY: number;
             if (board.cboard[i][j].direction == 'right') {
-              arrowWidth = this.cellSize / 2;
-              arrowHeight = this.cellSize / 4;
-              arrowX = Math.floor((this.cellSize - arrowWidth) / 2);
-              arrowY = Math.floor((this.cellSize - arrowHeight - textHeight) / 2);
+              let arrowWidth = this.cellSize / 2;
+              let arrowHeight = this.cellSize / 4;
+              let arrowX = Math.floor((this.cellSize - arrowWidth) / 2);
+              let arrowY = Math.floor((this.cellSize - arrowHeight - textHeight) / 2);
               textX = Math.floor((this.cellSize - textWidth) / 2);
               textY = Math.floor((this.cellSize + arrowHeight + textHeight) / 2);
               this.drawRotated(arrow, this.gridOffset + j * this.cellSize + arrowX, this.gridOffset + i * this.cellSize + arrowY, arrowWidth, arrowHeight, 0);
             } else if (board.cboard[i][j].direction == 'left') {
-              arrowWidth = this.cellSize / 2;
-              arrowHeight = this.cellSize / 4;
-              arrowX = Math.floor((this.cellSize + arrowWidth) / 2);
-              arrowY = Math.floor((this.cellSize + arrowHeight - textHeight) / 2);
+              let arrowWidth = this.cellSize / 2;
+              let arrowHeight = this.cellSize / 4;
+              let arrowX = Math.floor((this.cellSize + arrowWidth) / 2);
+              let arrowY = Math.floor((this.cellSize + arrowHeight - textHeight) / 2);
               textX = Math.floor((this.cellSize - textWidth) / 2);
               textY = Math.floor((this.cellSize + arrowHeight + textHeight) / 2);
               this.drawRotated(arrow, this.gridOffset + j * this.cellSize + arrowX, this.gridOffset + i * this.cellSize + arrowY, arrowWidth, arrowHeight, Math.PI);
             } else if (board.cboard[i][j].direction == 'up') {
-              arrowWidth = this.cellSize / 4;
-              arrowHeight = this.cellSize / 2;
-              arrowX = Math.floor((this.cellSize + textWidth - arrowWidth) / 2);
-              arrowY = Math.floor((this.cellSize + arrowHeight) / 2);
+              let arrowWidth = this.cellSize / 4;
+              let arrowHeight = this.cellSize / 2;
+              let arrowX = Math.floor((this.cellSize + textWidth - arrowWidth) / 2);
+              let arrowY = Math.floor((this.cellSize + arrowHeight) / 2);
               textX = Math.floor((this.cellSize - arrowWidth - textWidth) / 2);
               textY = Math.floor((this.cellSize + textHeight) / 2);
               this.drawRotated(arrow, this.gridOffset + j * this.cellSize + arrowX, this.gridOffset + i * this.cellSize + arrowY, arrowHeight, arrowWidth, -Math.PI / 2);
             } else if (board.cboard[i][j].direction == 'down') {
-              arrowWidth = this.cellSize / 4;
-              arrowHeight = this.cellSize / 2;
-              arrowX = Math.floor((this.cellSize + textWidth + arrowWidth) / 2);
-              arrowY = Math.floor((this.cellSize - arrowHeight) / 2);
+              let arrowWidth = this.cellSize / 4;
+              let arrowHeight = this.cellSize / 2;
+              let arrowX = Math.floor((this.cellSize + textWidth + arrowWidth) / 2);
+              let arrowY = Math.floor((this.cellSize - arrowHeight) / 2);
               textX = Math.floor((this.cellSize - arrowWidth - textWidth) / 2);
               textY = Math.floor((this.cellSize + textHeight) / 2);
               this.drawRotated(arrow, this.gridOffset + j * this.cellSize + arrowX, this.gridOffset + i * this.cellSize + arrowY, arrowHeight, arrowWidth, Math.PI / 2);
@@ -126,11 +122,11 @@ export class BoardCanvas {
     }
   }
 
-  drawRotated(arrow, posX, posY, width, height, angle) {
+  drawRotated(image: HTMLImageElement, posX: number, posY: number, width: number, height: number, angle: number): void {
     this.render_ctx.save();
     this.render_ctx.translate(posX, posY);
     this.render_ctx.rotate(angle);
-    this.render_ctx.drawImage(arrow, 0, 0, width, height);
+    this.render_ctx.drawImage(image, 0, 0, width, height);
     this.render_ctx.restore();
   }
 
