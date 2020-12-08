@@ -13,9 +13,9 @@ export class BoardCanvas {
 
   constructor(canvas: ElementRef<HTMLCanvasElement>) {
     this.arrow_black = new Image();
-    this.arrow_black.src = '../assets/arrow_black.svg';
+    this.arrow_black.src = 'assets/arrow_black.svg';
     this.arrow_white = new Image();
-    this.arrow_white.src = '../assets/arrow_white.svg';
+    this.arrow_white.src = 'assets/arrow_white.svg';
 
     this.htmlCanvas = canvas;
     this.render_ctx = canvas.nativeElement.getContext('2d');
