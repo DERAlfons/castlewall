@@ -49,7 +49,7 @@ export class BoardCanvas {
           this.render_ctx.fillStyle = board.cboard[i][j].color;
           this.render_ctx.fillRect(this.gridOffset + j * this.cellSize, this.gridOffset + i * this.cellSize, this.cellSize, this.cellSize);
           if (board.cboard[i][j].direction) {
-            let arrow;
+            let arrow: HTMLImageElement;
             if (board.cboard[i][j].color == 'black') {
               this.render_ctx.fillStyle = 'white';
               arrow = this.arrow_white;
@@ -120,6 +120,13 @@ export class BoardCanvas {
         }
       }
     }
+
+    if (board.selectV) {
+      this.indicate(board.selectV.i, board.selectV.j, board.selectV.i, board.selectV.j + 1);
+    }
+    if (board.selectH) {
+      this.indicate(board.selectH.j, board.selectH.i, board.selectH.j + 1, board.selectH.i);
+    }
   }
 
   drawRotated(image: HTMLImageElement, posX: number, posY: number, width: number, height: number, angle: number): void {
@@ -138,5 +145,12 @@ export class BoardCanvas {
     this.render_ctx.lineTo(this.gridOffset + x2 * this.cellSize + this.cellSize / 2, this.gridOffset + y2 * this.cellSize + this.cellSize / 2);
     this.render_ctx.stroke();
     this.render_ctx.closePath();
+  }
+
+  indicate(x1: number, y1: number, x2: number, y2: number): void {
+    this.render_ctx.beginPath();
+    this.render_ctx.arc(this.gridOffset + (x1 + x2 + 1) / 2 * this.cellSize, this.gridOffset + (y1 + y2 + 1) / 2 * this.cellSize, this.cellSize / 4, 0, 2 * Math.PI);
+    this.render_ctx.fillStyle = '#80808080';
+    this.render_ctx.fill();
   }
 }
