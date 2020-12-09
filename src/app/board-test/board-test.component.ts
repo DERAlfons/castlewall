@@ -39,7 +39,10 @@ export class BoardTestComponent implements OnInit {
       this.canvasWidth = this.board.width * this.cellSize + 2 * this.gridOffset;
       this.canvasHeight = this.board.height * this.cellSize + 2 * this.gridOffset;
       requestAnimationFrame(() => this.boardCanvas.render(this.board));
+      this.canvasbg.nativeElement.addEventListener('contextmenu', event => event.preventDefault());
       this.canvasbg.nativeElement.addEventListener('mousedown', event => this.handleMousedown(event));
+      this.canvasbg.nativeElement.addEventListener('mousemove', event => this.handleMousemove(event));
+      this.canvasbg.nativeElement.addEventListener('mouseleave', event => this.handleMouseleave(event));
     });
   }
 
@@ -76,14 +79,14 @@ export class BoardTestComponent implements OnInit {
     for (let i = 0; i < height; i++) {
       for (let j = 0; j < width - 1; j++) {
         if (walls[`h_r${i}_c${j}`]) {
-          this.board.update_wall_h(i, j);
+          this.board.update_wall_h(i, j, 0);
         }
       }
     }
     for (let i = 0; i < width; i++) {
       for (let j = 0; j < height - 1; j++) {
         if (walls[`v_r${j}_c${i}`]) {
-          this.board.update_wall_v(i, j);
+          this.board.update_wall_v(i, j, 0);
         }
       }
     }
@@ -106,23 +109,54 @@ export class BoardTestComponent implements OnInit {
 
     if (dx > dy) {
       if (dx > this.cellSize - dy) {
-        this.board.update_wall_h(py, px);
+        this.board.update_wall_h(py, px, event.button);
+      }
+      else {
+        this.board.update_wall_v(px, py - 1, event.button);
+      }
+    }
+    else {
+      if (dx > this.cellSize - dy) {
+        this.board.update_wall_v(px, py, event.button);
+      }
+      else {
+        this.board.update_wall_h(py, px - 1, event.button);
+      }
+    }
+
+    this.boardCanvas.render(this.board);
+  }
+
+  handleMousemove(event: MouseEvent): void {
+    let px = Math.floor((event.offsetX - this.gridOffset) / this.cellSize);
+    let py = Math.floor((event.offsetY - this.gridOffset) / this.cellSize);
+    let dx = (event.offsetX - this.gridOffset) % this.cellSize;
+    let dy = (event.offsetY - this.gridOffset) % this.cellSize;
+
+    if (dx > dy) {
+      if (dx > this.cellSize - dy) {
+        this.board.setSelectH(py, px);
         this.boardCanvas.render(this.board);
       }
       else {
-        this.board.update_wall_v(px, py - 1);
+        this.board.setSelectV(px, py - 1);
         this.boardCanvas.render(this.board);
       }
     }
     else {
       if (dx > this.cellSize - dy) {
-        this.board.update_wall_v(px, py);
+        this.board.setSelectV(px, py);
         this.boardCanvas.render(this.board);
       }
       else {
-        this.board.update_wall_h(py, px - 1);
+        this.board.setSelectH(py, px - 1);
         this.boardCanvas.render(this.board);
       }
     }
+  }
+
+  handleMouseleave(event: MouseEvent): void {
+    this.board.setSelectV(-1, -1);
+    this.boardCanvas.render(this.board);
   }
 }
