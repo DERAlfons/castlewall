@@ -10,6 +10,9 @@ export class Board {
   public vboard: string[][];
   public hboard: string[][];
 
+  public selectV: Indices = null;
+  public selectH: Indices = null;
+
   constructor(puzzle: Puzzle) {
     this.width = puzzle.width;
     this.height = puzzle.height;
@@ -75,6 +78,36 @@ export class Board {
     else if (this.hboard[i][j] == 'wall') {
       this.hboard[i][j] = null;
     }
+  }
+
+  setSelectV(i: number, j: number): void {
+    this.selectH = null;
+    this.selectV = null;
+
+    if (i < 0 || i >= this.width || j < 0 || j >= this.height - 1) {
+      return;
+    }
+
+    if (!this.vboard[i][j] || this.vboard[i][j] == 'wall') {
+      this.selectV = { i: i, j: j };
+    }
+
+    return;
+  }
+
+  setSelectH(i: number, j: number): void {
+    this.selectV = null;
+    this.selectH = null;
+
+    if (i < 0 || i >= this.height || j < 0 || j >= this.width - 1) {
+      return;
+    }
+
+    if (!this.hboard[i][j] || this.hboard[i][j] == 'wall') {
+      this.selectH = { i: i, j: j };
+    }
+
+    return;
   }
 
   check(): boolean {

@@ -40,6 +40,7 @@ export class BoardTestComponent implements OnInit {
       this.canvasHeight = this.board.height * this.cellSize + 2 * this.gridOffset;
       requestAnimationFrame(() => this.boardCanvas.render(this.board));
       this.canvasbg.nativeElement.addEventListener('mousedown', event => this.handleMousedown(event));
+      this.canvasbg.nativeElement.addEventListener('mousemove', event => this.handleMousemove(event));
     });
   }
 
@@ -121,6 +122,34 @@ export class BoardTestComponent implements OnInit {
       }
       else {
         this.board.update_wall_h(py, px - 1);
+        this.boardCanvas.render(this.board);
+      }
+    }
+  }
+
+  handleMousemove(event: MouseEvent): void {
+    let px = Math.floor((event.offsetX - this.gridOffset) / this.cellSize);
+    let py = Math.floor((event.offsetY - this.gridOffset) / this.cellSize);
+    let dx = (event.offsetX - this.gridOffset) % this.cellSize;
+    let dy = (event.offsetY - this.gridOffset) % this.cellSize;
+
+    if (dx > dy) {
+      if (dx > this.cellSize - dy) {
+        this.board.setSelectH(py, px);
+        this.boardCanvas.render(this.board);
+      }
+      else {
+        this.board.setSelectV(px, py - 1);
+        this.boardCanvas.render(this.board);
+      }
+    }
+    else {
+      if (dx > this.cellSize - dy) {
+        this.board.setSelectV(px, py);
+        this.boardCanvas.render(this.board);
+      }
+      else {
+        this.board.setSelectH(py, px - 1);
         this.boardCanvas.render(this.board);
       }
     }
