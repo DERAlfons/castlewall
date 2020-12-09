@@ -111,12 +111,18 @@ export class BoardCanvas {
         if (board.vboard[i][j] == 'wall') {
           this.connect(i, j, i, j + 1);
         }
+        else if (board.vboard[i][j] == 'blocked') {
+          this.block(i, j, i, j + 1);
+        }
       }
     }
     for (let i = 0; i < board.height; i++) {
       for (let j = 0; j < board.width - 1; j++) {
         if (board.hboard[i][j] == 'wall') {
           this.connect(j, i, j + 1, i);
+        }
+        else if (board.hboard[i][j] == 'blocked') {
+          this.block(j, i, j + 1, i);
         }
       }
     }
@@ -143,6 +149,19 @@ export class BoardCanvas {
     this.render_ctx.lineWidth = 2;
     this.render_ctx.moveTo(this.gridOffset + x1 * this.cellSize + this.cellSize / 2, this.gridOffset + y1 * this.cellSize + this.cellSize / 2);
     this.render_ctx.lineTo(this.gridOffset + x2 * this.cellSize + this.cellSize / 2, this.gridOffset + y2 * this.cellSize + this.cellSize / 2);
+    this.render_ctx.stroke();
+    this.render_ctx.closePath();
+  }
+
+  block(x1: number, y1: number, x2: number, y2: number): void {
+    this.render_ctx.beginPath();
+    this.render_ctx.strokeStyle = 'grey';
+    this.render_ctx.lineWidth = 2;
+    this.render_ctx.moveTo(this.gridOffset + (x1 + x2 + 1 - Math.sqrt(2) / 4) / 2 * this.cellSize, this.gridOffset + (y1 + y2 + 1 - Math.sqrt(2) / 4) / 2 * this.cellSize);
+    this.render_ctx.lineTo(this.gridOffset + (x1 + x2 + 1 + Math.sqrt(2) / 4) / 2 * this.cellSize, this.gridOffset + (y1 + y2 + 1 + Math.sqrt(2) / 4) / 2 * this.cellSize);
+    this.render_ctx.stroke();
+    this.render_ctx.moveTo(this.gridOffset + (x1 + x2 + 1 + Math.sqrt(2) / 4) / 2 * this.cellSize, this.gridOffset + (y1 + y2 + 1 - Math.sqrt(2) / 4) / 2 * this.cellSize);
+    this.render_ctx.lineTo(this.gridOffset + (x1 + x2 + 1 - Math.sqrt(2) / 4) / 2 * this.cellSize, this.gridOffset + (y1 + y2 + 1 + Math.sqrt(2) / 4) / 2 * this.cellSize);
     this.render_ctx.stroke();
     this.render_ctx.closePath();
   }

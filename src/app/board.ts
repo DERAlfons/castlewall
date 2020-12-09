@@ -1,6 +1,7 @@
 import { Puzzle } from './puzzle';
 import { WallHint } from './wall-hint';
 import { Indices, is_even, is_odd, transpose, count } from './util';
+import { ThrowStmt } from '@angular/compiler';
 
 export class Board {
   public width: number;
@@ -33,10 +34,10 @@ export class Board {
       this.vboard.push([]);
       for (let j = 0; j < this.height - 1; j++) {
         if (this.cboard[j][i] || this.cboard[j + 1][i]) {
-          this.vboard[i].push('blocked');
+          this.vboard[i].push('impossible');
         }
         else {
-          this.vboard[i].push(null);
+          this.vboard[i].push('empty');
         }
       }
     }
@@ -45,39 +46,63 @@ export class Board {
       this.hboard.push([]);
       for (let j = 0; j < this.width - 1; j++) {
         if (this.cboard[i][j] || this.cboard[i][j + 1]) {
-          this.hboard[i].push('blocked');
+          this.hboard[i].push('impossible');
         }
         else {
-          this.hboard[i].push(null);
+          this.hboard[i].push('empty');
         }
       }
     }
   }
 
-  update_wall_v(i: number, j: number): void {
+  update_wall_v(i: number, j: number, button: number): void {
     if (i < 0 || i >= this.width || j < 0 || j >= this.height - 1) {
       return;
     }
 
-    if (!this.vboard[i][j]) {
-      this.vboard[i][j] = 'wall';
+    if (button == 0) {
+      if (this.vboard[i][j] == 'empty') {
+        this.vboard[i][j] = 'wall';
+      }
+      else if (this.vboard[i][j] == 'wall') {
+        this.vboard[i][j] = 'empty';
+      }
     }
-    else if (this.vboard[i][j] == 'wall') {
-      this.vboard[i][j] = null;
+    else if (button == 2) {
+      if (this.vboard[i][j] == 'blocked') {
+        this.vboard[i][j] = 'empty';
+      }
+      else if (this.vboard[i][j] != 'impossible') {
+        this.vboard[i][j] = 'blocked';
+      }
     }
+
+    return;
   }
 
-  update_wall_h(i: number, j: number): void {
+  update_wall_h(i: number, j: number, button: number): void {
     if (i < 0 || i >= this.height || j < 0 || j >= this.width - 1) {
       return;
     }
 
-    if (!this.hboard[i][j]) {
-      this.hboard[i][j] = 'wall';
+    if (button == 0) {
+      if (this.hboard[i][j] == 'empty') {
+        this.hboard[i][j] = 'wall';
+      }
+      else if (this.hboard[i][j] == 'wall') {
+        this.hboard[i][j] = 'empty';
+      }
     }
-    else if (this.hboard[i][j] == 'wall') {
-      this.hboard[i][j] = null;
+    else if (button == 2) {
+      if (this.hboard[i][j] == 'blocked') {
+        this.hboard[i][j] = 'empty';
+      }
+      else if (this.hboard[i][j] != 'impossible') {
+        this.hboard[i][j] = 'blocked';
+      }
     }
+
+    return;
   }
 
   setSelectV(i: number, j: number): void {
@@ -88,7 +113,7 @@ export class Board {
       return;
     }
 
-    if (!this.vboard[i][j] || this.vboard[i][j] == 'wall') {
+    if (this.vboard[i][j] != 'impossible') {
       this.selectV = { i: i, j: j };
     }
 
@@ -103,7 +128,7 @@ export class Board {
       return;
     }
 
-    if (!this.hboard[i][j] || this.hboard[i][j] == 'wall') {
+    if (this.hboard[i][j] != 'impossible') {
       this.selectH = { i: i, j: j };
     }
 
