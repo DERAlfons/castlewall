@@ -14,9 +14,15 @@
 <div class="col-xl-3 col-md-6 mb-4">
 <div class="card shadow h-100 py-2">
 <div class="card-body">
-  <button (click)="checkBtn()">Check</button>
-  <br>
-  <a routerLink="/editor/{{puzzleId}}">Edit</a>
+  <button class="btn btn-icon-split btn-primary" (click)="checkBtn()">
+    <span class="icon"><i class="fas fa-check"></i></span>
+    <span class="text">Check</span>
+  </button>
+  <br><br>
+  <a class="btn btn-icon-split btn-primary" routerLink="/editor/{{puzzleId}}">
+    <span class="icon"><i class="fas fa-edit"></i></span>
+    <span class="text">Edit</span>
+  </a>
 </div>
 </div>
 </div>
@@ -24,13 +30,17 @@
 <div class="col-xl-3 col-md-6 mb-4">
 <div class="card shadow h-100 py-2">
 <div class="card-body">
-  <input type="file" #puzzleFile />
-  <br>
-  <button (click)="loadFile(puzzleFile.files[0])">Load puzzle file</button>
-  <br>
-  <input type="file" #wallsFile />
-  <br>
-  <button (click)="loadWalls(wallsFile.files[0])">Load walls</button>
+  <input type="file" #puzzleFile (change)="loadFile(puzzleFile.files[0])" style="display: none"/>
+  <button class="btn btn-icon-split btn-primary" (click)="puzzleFile.click()">
+    <span class="icon"><i class="fas fa-upload"></i></span>
+    <span class="text">Load puzzle file</span>
+  </button>
+  <br><br>
+  <input type="file" #wallsFile (change)="loadWalls(wallsFile.files[0])" style="display: none"/>
+  <button class="btn btn-icon-split btn-primary" (click)="wallsFile.click()">
+    <span class="icon"><i class="fas fa-border-style"></i></span>
+    <span class="text">Load walls</span>
+  </button>
 </div>
 </div>
 </div>

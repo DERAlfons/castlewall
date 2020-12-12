@@ -43,14 +43,20 @@
 <div class="col-xl-3 col-md-6 mb-4">
 <div class="card shadow h-100 py-2">
 <div class="card-body">
-  <label for="title">Title</label>
-  <input #puzzleTitle id="title" value="" />
-  <br>
-  <label for="width">Width</label>
-  <input type="number" id="width" [(ngModel)]="editWidth" value="10" min="2" (change)="updateWidth()" />
-  <br>
-  <label for="height">Height</label>
-  <input type="number" id="height" [(ngModel)]="editHeight" value="10" min="2" (change)="updateHeight()" />
+  <table>
+    <tr>
+      <td><label for="title">Title</label></td>
+      <td><input #puzzleTitle id="title" value="" /></td>
+    </tr>
+    <tr>
+      <td><label for="width">Width</label></td>
+      <td><input type="number" id="width" [(ngModel)]="editWidth" value="10" min="2" (change)="updateWidth()" /></td>
+    </tr>
+    <tr>
+      <td><label for="height">Height</label></td>
+      <td><input type="number" id="height" [(ngModel)]="editHeight" value="10" min="2" (change)="updateHeight()" /></td>
+    </tr>
+  </table>
 </div>
 </div>
 </div>
@@ -58,11 +64,17 @@
 <div class="col-xl-3 col-md-6 mb-4">
 <div class="card shadow h-100 py-2">
 <div class="card-body">
-  <button (click)="add(puzzleTitle.value); puzzleTitle.value='';">
-      Add Puzzle
+  <button class="btn btn-icon-split btn-primary" (click)="add(puzzleTitle.value); puzzleTitle.value='';">
+    <span class="icon"><i class="fas fa-cloud-upload-alt"></i></span>
+    <span class="text">Upload Puzzle</span>
   </button>
-  <br>
-  <a [href]="puzzleDownload" download="puzzle.json">Save Puzzle</a>
+  <br><br>
+  <a class="btn btn-icon-split btn-primary" [href]="puzzleDownload" download="puzzle.json">
+    <span class="icon"><i class="fas fa-download"></i></span>
+    <span class="text">
+      Save Puzzle
+    </span>
+  </a>
 </div>
 </div>
 </div>
