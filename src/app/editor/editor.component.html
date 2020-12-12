@@ -64,11 +64,17 @@
 <div class="col-xl-3 col-md-6 mb-4">
 <div class="card shadow h-100 py-2">
 <div class="card-body">
-  <button (click)="add(puzzleTitle.value); puzzleTitle.value='';">
-      Add Puzzle
+  <button class="btn btn-icon-split btn-primary" (click)="add(puzzleTitle.value); puzzleTitle.value='';">
+    <span class="icon"><i class="fas fa-cloud-upload-alt"></i></span>
+    <span class="text">Upload Puzzle</span>
   </button>
-  <br>
-  <a [href]="puzzleDownload" download="puzzle.json">Save Puzzle</a>
+  <br><br>
+  <a class="btn btn-icon-split btn-primary" [href]="puzzleDownload" download="puzzle.json">
+    <span class="icon"><i class="fas fa-download"></i></span>
+    <span class="text">
+      Save Puzzle
+    </span>
+  </a>
 </div>
 </div>
 </div>
