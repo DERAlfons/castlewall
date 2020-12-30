@@ -21,6 +21,7 @@ export class PuzzleService {
   }
 
   private puzzlesUrl = 'api/puzzles';
+  private testUrl = 'http://monolithicalstone.xyz:8000/sqltest';
 
   getPuzzles(): Observable<Puzzle[]> {
     return this.http.get<Puzzle[]>(this.puzzlesUrl)
@@ -52,7 +53,7 @@ export class PuzzleService {
   }
 
   addPuzzle(puzzle: Puzzle): Observable<Puzzle> {
-    return this.http.post<Puzzle>(this.puzzlesUrl, puzzle, this.httpOptions)
+    return this.http.post<Puzzle>(this.testUrl, puzzle, this.httpOptions)
       .pipe(
         tap((newPuzzle: Puzzle) => this.log(`added puzzle w/ id=${newPuzzle.id}`)),
         catchError(this.handleError<Puzzle>('addPuzzle'))
