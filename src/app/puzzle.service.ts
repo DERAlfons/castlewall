@@ -22,9 +22,10 @@ export class PuzzleService {
 
   private puzzlesUrl = 'api/puzzles';
   private testUrl = 'http://monolithicalstone.xyz:8000/sqltest';
+  private readUrl = 'http://monolithicalstone.xyz:8000/read';
 
   getPuzzles(): Observable<Puzzle[]> {
-    return this.http.get<Puzzle[]>(this.puzzlesUrl)
+    return this.http.get<Puzzle[]>(this.readUrl)
       .pipe(
         tap(_ => this.log('fetched puzzles')),
         catchError(this.handleError<Puzzle[]>('getPuzzles', []))
@@ -32,7 +33,7 @@ export class PuzzleService {
   }
 
   getPuzzle(id: number): Observable<Puzzle> {
-    const url = `${this.puzzlesUrl}/${id}`;
+    const url = `${this.readUrl}/${id}`;
     return this.http.get<Puzzle>(url)
       .pipe(
         tap(_ => this.log(`fetched puzzle id=${id}`)),
