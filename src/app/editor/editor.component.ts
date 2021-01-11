@@ -129,6 +129,21 @@ export class EditorComponent implements OnInit {
     if (!title) { return; }
     let puzzle = this.board.toPuzzle();
     puzzle.title = title;
-    this.puzzleService.addPuzzle(puzzle).subscribe();
+    this.puzzleService.addPuzzle(puzzle).subscribe(checkPuzzle => {
+      this.pollCheck(checkPuzzle.id);
+    });
+  }
+
+  pollCheck(id: number): void {
+    this.puzzleService.checkPuzzle(id).subscribe(response => {
+      if (response.status == 'progress') {
+        setTimeout(() => {
+          this.pollCheck(id);
+        }, 3000);
+      }
+      else {
+        console.log(`Check finished with status: ${response.status}`);
+      }
+    });
   }
 }

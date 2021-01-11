@@ -23,6 +23,7 @@ export class PuzzleService {
   private puzzlesUrl = 'api/puzzles';
   private testUrl = 'http://monolithicalstone.xyz:8000/sqltest';
   private readUrl = 'http://monolithicalstone.xyz:8000/read';
+  private checkUrl = 'http://monolithicalstone.xyz:8000/check';
 
   getPuzzles(): Observable<Puzzle[]> {
     return this.http.get<Puzzle[]>(this.readUrl)
@@ -58,6 +59,14 @@ export class PuzzleService {
       .pipe(
         tap((newPuzzle: Puzzle) => this.log(`added puzzle w/ id=${newPuzzle.id}`)),
         catchError(this.handleError<Puzzle>('addPuzzle'))
+      );
+  }
+
+  checkPuzzle(id: number): Observable<{ status: string }> {
+    return this.http.get<{ status: string }>(`${this.checkUrl}/${id}`)
+      .pipe(
+        tap(response => this.log(`Status of check: ${response.status}`)),
+        catchError(this.handleError<{ status: string }>('checkPuzzle'))
       );
   }
 
