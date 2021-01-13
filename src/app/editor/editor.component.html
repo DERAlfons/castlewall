@@ -64,9 +64,25 @@
 <div class="col-xl-3 col-md-6 mb-4">
 <div class="card shadow h-100 py-2">
 <div class="card-body">
-  <button class="btn btn-icon-split btn-primary" (click)="add(puzzleTitle.value); puzzleTitle.value='';">
+  <button *ngIf="checkStatus == 'edit'" class="btn btn-icon-split btn-primary" (click)="add(puzzleTitle.value); puzzleTitle.value='';">
     <span class="icon"><i class="fas fa-cloud-upload-alt"></i></span>
     <span class="text">Upload Puzzle</span>
+  </button>
+  <button *ngIf="checkStatus == 'progress'" class="btn btn-icon-split btn-secondary">
+    <span class="icon"><i class="fas fa-spinner"></i></span>
+    <span class="text">Checking solvability of puzzle...</span>
+  </button>
+  <button *ngIf="checkStatus == 'unique'" class="btn btn-icon-split btn-success">
+    <span class="icon"><i class="fas fa-check"></i></span>
+    <span class="text">Puzzle has unique solution</span>
+  </button>
+  <button *ngIf="checkStatus == 'impossible'" class="btn btn-icon-split btn-danger">
+    <span class="icon"><i class="fas fa-times"></i></span>
+    <span class="text">Puzzle does not have a solution</span>
+  </button>
+  <button *ngIf="checkStatus == 'ambiguous'" class="btn btn-icon-split btn-danger">
+    <span class="icon"><i class="fas fa-times"></i></span>
+    <span class="text">Puzzle has multiple solutions</span>
   </button>
   <br><br>
   <a class="btn btn-icon-split btn-primary" [href]="puzzleDownload" download="puzzle.json">

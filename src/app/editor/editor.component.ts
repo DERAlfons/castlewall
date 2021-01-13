@@ -17,6 +17,7 @@ export class EditorComponent implements OnInit {
   canvasbg: ElementRef<HTMLCanvasElement>;
   canvasWidth: number = 800;
   canvasHeight: number = 640;
+  checkStatus: string = 'edit';
   menuActive: boolean = false;
   editPositionX: number;
   editPositionY: number;
@@ -129,6 +130,7 @@ export class EditorComponent implements OnInit {
     if (!title) { return; }
     let puzzle = this.board.toPuzzle();
     puzzle.title = title;
+    this.checkStatus = 'progress';
     this.puzzleService.addPuzzle(puzzle).subscribe(checkPuzzle => {
       this.pollCheck(checkPuzzle.id);
     });
@@ -142,7 +144,7 @@ export class EditorComponent implements OnInit {
         }, 3000);
       }
       else {
-        console.log(`Check finished with status: ${response.status}`);
+        this.checkStatus = response.status;
       }
     });
   }
