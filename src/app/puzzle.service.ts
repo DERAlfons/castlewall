@@ -21,9 +21,9 @@ export class PuzzleService {
   }
 
   private puzzlesUrl = 'api/puzzles';
-  private testUrl = 'http://monolithicalstone.xyz:8000/sqltest';
-  private readUrl = 'http://monolithicalstone.xyz:8000/read';
-  private checkUrl = 'http://monolithicalstone.xyz:8000/check';
+  private testUrl = 'https://monolithicalstone.xyz/sqltest';
+  private readUrl = 'https://monolithicalstone.xyz/read';
+  private checkUrl = 'https://monolithicalstone.xyz/check';
 
   getPuzzles(): Observable<Puzzle[]> {
     return this.http.get<Puzzle[]>(this.readUrl)
