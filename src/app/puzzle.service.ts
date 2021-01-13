@@ -54,8 +54,8 @@ export class PuzzleService {
       );
   }
 
-  addPuzzle(puzzle: Puzzle): Observable<Puzzle> {
-    return this.http.post<Puzzle>(this.testUrl, puzzle, this.httpOptions)
+  addPuzzle(puzzle: Puzzle, accessCode: string): Observable<Puzzle> {
+    return this.http.post<Puzzle>(this.testUrl, { puzzle: puzzle, accessCode: accessCode }, this.httpOptions)
       .pipe(
         tap((newPuzzle: Puzzle) => this.log(`added puzzle w/ id=${newPuzzle.id}`)),
         catchError(this.handleError<Puzzle>('addPuzzle'))
