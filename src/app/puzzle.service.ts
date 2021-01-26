@@ -52,11 +52,11 @@ export class PuzzleService {
       );
   }
 
-  private log(message: string) {
+  private log(message: string): void {
     this.messagesService.add(`PuzzleService: ${message}`);
   }
 
-  private handleError<T>(operation = 'operation', result?: T) {
+  private handleError<T>(operation = 'operation', result?: T): (error: any) => Observable<T> {
     return (error: any): Observable<T> => {
       console.error(error); // TODO: log error in logging framework
 
