@@ -1,7 +1,6 @@
 import { Puzzle } from './puzzle';
 import { WallHint } from './wall-hint';
 import { Indices, is_even, is_odd, transpose, count } from './util';
-import { ThrowStmt } from '@angular/compiler';
 
 export class Board {
   public width: number;

@@ -11,7 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AngularIntroComponent } from './angular-intro/angular-intro.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { InMemoryDataService } from './in-memory-data.service';
-import { BoardTestComponent } from './board-test/board-test.component';
+import { BoardComponent } from './board/board.component';
 import { EditorComponent } from './editor/editor.component'
 
 @NgModule({
@@ -21,7 +21,7 @@ import { EditorComponent } from './editor/editor.component'
     MessagesComponent,
     AngularIntroComponent,
     DashboardComponent,
-    BoardTestComponent,
+    BoardComponent,
     EditorComponent
   ],
   imports: [

@@ -6,11 +6,11 @@ import { Board } from '../board';
 import { BoardCanvas } from '../board-canvas';
 
 @Component({
-  selector: 'app-board-test',
-  templateUrl: './board-test.component.html',
-  styleUrls: ['./board-test.component.css']
+  selector: 'app-board',
+  templateUrl: './board.component.html',
+  styleUrls: ['./board.component.css']
 })
-export class BoardTestComponent implements OnInit {
+export class BoardComponent implements OnInit {
   @ViewChild('canvasbg', { static: true })
   canvasbg: ElementRef<HTMLCanvasElement>;
   canvasWidth: number = 800;
