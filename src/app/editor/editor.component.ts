@@ -143,7 +143,7 @@ export class EditorComponent implements OnInit {
   }
 
   pollCheck(id: number): void {
-    this.puzzleService.checkPuzzle(id).subscribe(response => {
+    this.puzzleService.checkPuzzleStatus(id).subscribe(response => {
       if (response.status == 'progress') {
         setTimeout(() => {
           this.pollCheck(id);
