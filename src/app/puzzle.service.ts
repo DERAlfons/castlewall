@@ -20,7 +20,8 @@ export class PuzzleService {
   ) { }
 
   getPuzzles(): Observable<Puzzle[]> {
-    return this.http.get<Puzzle[]>(`${this.apiUrl}/read`)
+    const url = `${this.apiUrl}/read`;
+    return this.http.get<Puzzle[]>(url)
       .pipe(
         tap(_ => this.log('fetched puzzles')),
         catchError(this.handleError<Puzzle[]>('getPuzzles', []))
@@ -37,7 +38,8 @@ export class PuzzleService {
   }
 
   addPuzzle(puzzle: Puzzle, accessCode: string): Observable<Puzzle> {
-    return this.http.post<Puzzle>(`${this.apiUrl}/sqltest`, { puzzle: puzzle, accessCode: accessCode }, this.httpOptions)
+    const url = `${this.apiUrl}/sqltest`;
+    return this.http.post<Puzzle>(url, { puzzle: puzzle, accessCode: accessCode }, this.httpOptions)
       .pipe(
         tap((newPuzzle: Puzzle) => this.log(`added puzzle w/ id=${newPuzzle.id}`)),
         catchError(this.handleError<Puzzle>('addPuzzle'))
@@ -45,7 +47,8 @@ export class PuzzleService {
   }
 
   checkPuzzleStatus(id: number): Observable<{ status: string }> {
-    return this.http.get<{ status: string }>(`${this.apiUrl}/check/${id}`)
+    const url = `${this.apiUrl}/check/${id}`;
+    return this.http.get<{ status: string }>(url)
       .pipe(
         tap(response => this.log(`Status of check: ${response.status}`)),
         catchError(this.handleError<{ status: string }>('checkPuzzleStatus'))
