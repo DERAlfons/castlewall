@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 
 import { Puzzle } from './puzzle';
 import { MessagesService } from './messages.service';
@@ -11,19 +11,17 @@ import { MessagesService } from './messages.service';
 })
 export class PuzzleService {
 
+  private apiUrl = 'https://monolithicalstone.xyz';
+  private httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+
   constructor(
     private http: HttpClient,
     private messagesService: MessagesService
   ) { }
 
-  private log(message: string) {
-    this.messagesService.add(`PuzzleService: ${message}`);
-  }
-
-  private puzzlesUrl = 'api/puzzles';
-
   getPuzzles(): Observable<Puzzle[]> {
-    return this.http.get<Puzzle[]>(this.puzzlesUrl)
+    const url = `${this.apiUrl}/read`;
+    return this.http.get<Puzzle[]>(url)
       .pipe(
         tap(_ => this.log('fetched puzzles')),
         catchError(this.handleError<Puzzle[]>('getPuzzles', []))
@@ -31,7 +29,7 @@ export class PuzzleService {
   }
 
   getPuzzle(id: number): Observable<Puzzle> {
-    const url = `${this.puzzlesUrl}/${id}`;
+    const url = `${this.apiUrl}/read/${id}`;
     return this.http.get<Puzzle>(url)
       .pipe(
         tap(_ => this.log(`fetched puzzle id=${id}`)),
@@ -39,52 +37,29 @@ export class PuzzleService {
       )
   }
 
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
-
-  updatePuzzle(puzzle: Puzzle): Observable<any> {
-    return this.http.put(this.puzzlesUrl, puzzle, this.httpOptions)
-      .pipe(
-        tap(_ => this.log(`updated puzzle id=${puzzle.id}`)),
-        catchError(this.handleError<any>('updatePuzzle'))
-      );
-  }
-
-  addPuzzle(puzzle: Puzzle): Observable<Puzzle> {
-    return this.http.post<Puzzle>(this.puzzlesUrl, puzzle, this.httpOptions)
+  addPuzzle(puzzle: Puzzle, accessCode: string): Observable<Puzzle> {
+    const url = `${this.apiUrl}/add`;
+    return this.http.post<Puzzle>(url, { puzzle: puzzle, accessCode: accessCode }, this.httpOptions)
       .pipe(
         tap((newPuzzle: Puzzle) => this.log(`added puzzle w/ id=${newPuzzle.id}`)),
         catchError(this.handleError<Puzzle>('addPuzzle'))
       );
   }
 
-  deletePuzzle(puzzle: Puzzle | number): Observable<Puzzle> {
-    const id = typeof puzzle === 'number' ? puzzle : puzzle.id;
-    const url = `${this.puzzlesUrl}/${id}`;
-
-    return this.http.delete<Puzzle>(url, this.httpOptions)
+  checkPuzzleStatus(id: number): Observable<{ status: string }> {
+    const url = `${this.apiUrl}/checkstatus/${id}`;
+    return this.http.get<{ status: string }>(url)
       .pipe(
-        tap(_ => this.log(`deleted puzzle id=${id}`)),
-        catchError(this.handleError<Puzzle>('deletePuzzle'))
+        tap(response => this.log(`Status of check: ${response.status}`)),
+        catchError(this.handleError<{ status: string }>('checkPuzzleStatus'))
       );
   }
 
-  searchPuzzles(term: string): Observable<Puzzle[]> {
-    if (!term.trim()) {
-      return of([]);
-    }
-
-    return this.http.get<Puzzle[]>(`${this.puzzlesUrl}/?title=${term}`)
-      .pipe(
-        tap(x => x.length ?
-          this.log(`found puzzles matching "${term}"`) :
-          this.log(`no puzzles matching "${term}"`)),
-        catchError(this.handleError<Puzzle[]>('searchPuzzles', []))
-      );
+  private log(message: string): void {
+    this.messagesService.add(`PuzzleService: ${message}`);
   }
 
-  private handleError<T>(operation = 'operation', result?: T) {
+  private handleError<T>(operation = 'operation', result?: T): (error: any) => Observable<T> {
     return (error: any): Observable<T> => {
       console.error(error); // TODO: log error in logging framework
 
