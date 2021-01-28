@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { Puzzle } from '../puzzle';
 import { PuzzleService } from '../puzzle.service';
-import { MessagesService } from '../messages.service';
 
 @Component({
   selector: 'app-puzzles',
@@ -11,7 +10,9 @@ import { MessagesService } from '../messages.service';
 })
 export class PuzzlesComponent implements OnInit {
 
-  constructor(private puzzleService: PuzzleService, private messagesService: MessagesService) { }
+  puzzles: Puzzle[];
+
+  constructor(private puzzleService: PuzzleService) { }
 
   ngOnInit(): void {
     this.getPuzzles();
@@ -20,12 +21,5 @@ export class PuzzlesComponent implements OnInit {
   getPuzzles(): void {
     this.puzzleService.getPuzzles()
       .subscribe(puzzles => this.puzzles = puzzles);
-  }
-
-  puzzles: Puzzle[];
-
-  delete(puzzle: Puzzle): void {
-    this.puzzles = this.puzzles.filter(p => p !== puzzle);
-    this.puzzleService.deletePuzzle(puzzle).subscribe();
   }
 }

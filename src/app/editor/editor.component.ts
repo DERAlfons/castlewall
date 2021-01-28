@@ -17,6 +17,8 @@ export class EditorComponent implements OnInit {
   canvasbg: ElementRef<HTMLCanvasElement>;
   canvasWidth: number = 800;
   canvasHeight: number = 640;
+  checkStatus: string = 'edit';
+  accessCode: string;
   menuActive: boolean = false;
   editPositionX: number;
   editPositionY: number;
@@ -126,9 +128,30 @@ export class EditorComponent implements OnInit {
 
   add(title: string): void {
     title = title.trim();
-    if (!title) { return; }
+    if (!title) { 
+      alert('Title can not be empty');
+      return;
+    }
+
     let puzzle = this.board.toPuzzle();
     puzzle.title = title;
-    this.puzzleService.addPuzzle(puzzle).subscribe();
+
+    this.checkStatus = 'progress';
+    this.puzzleService.addPuzzle(puzzle, this.accessCode).subscribe(checkPuzzle => {
+      this.pollCheck(checkPuzzle.id);
+    });
+  }
+
+  pollCheck(id: number): void {
+    this.puzzleService.checkPuzzleStatus(id).subscribe(response => {
+      if (response.status == 'progress') {
+        setTimeout(() => {
+          this.pollCheck(id);
+        }, 3000);
+      }
+      else {
+        this.checkStatus = response.status;
+      }
+    });
   }
 }
