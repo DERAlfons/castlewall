@@ -66,7 +66,7 @@ export class BoardComponent implements OnInit {
     reader.readAsText(wallsFile);
   }
 
-  createWalls(walls: any): void {
+  createWalls(walls: { [wall: string]: number }): void {
     let height = 0;
     while (walls[`h_r${height}_c0`] !== undefined) {
       height += 1;
@@ -94,10 +94,10 @@ export class BoardComponent implements OnInit {
 
   checkBtn(): void {
     if (this.board.check()) {
-      console.log("Yay");
+      alert('Your solution is correct :)');
     }
     else {
-      console.log("Nay");
+      alert('WRONG!');
     }
   }
 
