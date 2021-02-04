@@ -1,21 +1,32 @@
-canvas {
-    border-style: solid
-}
-
 .puzzle-editor {
   position: relative;
 }
 
 .puzzle-editor .hint-menu {
-  background-color: grey;
+  background-color: lightgrey;
   color: #000;
-  padding: 5px 0;
   border-radius: 6px;
+  padding: 5px 5px;
 
   position: absolute;
-  margin-top: 8px;
+  margin-top: 16px;
   transform: translateX(-50%);
   z-index: 1;
+}
+
+.puzzle-editor .hint-menu input[type="radio"] {
+  margin-left: 4px;
+  margin-right: 2px;
+}
+
+.puzzle-editor .hint-menu input[type="number"] {
+  width: 66px;
+  height: 34px;
+  margin-right: 4px;
+}
+
+.puzzle-editor .hint-menu button {
+  margin-right: 4px;
 }
 
 .puzzle-editor .hint-menu::after {
@@ -26,5 +37,5 @@ canvas {
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent transparent grey transparent;
+  border-color: transparent transparent lightgrey transparent;
 }

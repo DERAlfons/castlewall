@@ -66,7 +66,7 @@ export class BoardComponent implements OnInit {
     reader.readAsText(wallsFile);
   }
 
-  createWalls(walls: any): void {
+  createWalls(walls: { [wall: string]: number }): void {
     let height = 0;
     while (walls[`h_r${height}_c0`] !== undefined) {
       height += 1;

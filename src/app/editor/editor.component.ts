@@ -26,8 +26,9 @@ export class EditorComponent implements OnInit {
   menuPositionY: string = '0px';
   editWidth: string;
   editHeight: string;
-  editColor: string;
-  editDirection: string;
+  editColor: string = 'black';
+  editDirection: string = 'nodirection';
+  editWalls: string = '0';
   board: EditBoard = new EditBoard({ id: null, title: 'Editor', s_representation: '?', width: 10, height: 10, hints: [] });
   puzzleDownload: SafeResourceUrl;
 
@@ -94,29 +95,50 @@ export class EditorComponent implements OnInit {
     if (px >= 0 && px < this.board.width && py >= 0 && py < this.board.height) {
       this.editPositionX = px;
       this.editPositionY = py;
+      if (this.board.cboard[this.editPositionY][this.editPositionX]) {
+        this.editColor = this.board.cboard[this.editPositionY][this.editPositionX].color;
+        if (this.board.cboard[this.editPositionY][this.editPositionX].direction) {
+          this.editDirection = this.board.cboard[this.editPositionY][this.editPositionX].direction;
+          this.editWalls = String(this.board.cboard[this.editPositionY][this.editPositionX].walls);
+        }
+        else {
+          this.editDirection = 'nodirection';
+          this.editWalls = '0';
+        }
+      }
+      else {
+        this.editColor = 'black';
+        this.editDirection = 'nodirection';
+        this.editWalls = '0';
+      }
       this.menuPositionX = `${this.gridOffset + this.cellSize * px + this.cellSize / 2}px`;
       this.menuPositionY = `${this.gridOffset + this.cellSize * py + this.cellSize / 2}px`;
       this.menuActive = true;
     }
   }
 
-  addHint(walls: number): void {
-    console.log(`adding Hint: color=${this.editColor}, direction=${this.editDirection}, walls=${walls}`);
+  addHint(): void {
+    console.log(`adding Hint: color=${this.editColor}, direction=${this.editDirection}, walls=${this.editWalls}`);
 
-    if (this.editColor && this.editColor != 'nocolor') {
-      if (this.editDirection && this.editDirection != 'nodirection') {
-        this.board.cboard[this.editPositionY][this.editPositionX] = { color: this.editColor, direction: this.editDirection, walls: walls };
-      }
-      else {
-        this.board.cboard[this.editPositionY][this.editPositionX] = { color: this.editColor, direction: null, walls: null };
-      }
+    if (this.editDirection && this.editDirection != 'nodirection') {
+      this.board.cboard[this.editPositionY][this.editPositionX] = { color: this.editColor, direction: this.editDirection, walls: +this.editWalls };
     }
     else {
-      this.board.cboard[this.editPositionY][this.editPositionX] = null;
+      this.board.cboard[this.editPositionY][this.editPositionX] = { color: this.editColor, direction: null, walls: null };
     }
 
     this.menuActive = false;
 
+    this.boardCanvas.render(this.board);
+
+    this.updatePuzzleDownload();
+  }
+
+  deleteHint(): void {
+    this.board.cboard[this.editPositionY][this.editPositionX] = null;
+
+    this.menuActive = false;
+    
     this.boardCanvas.render(this.board);
 
     this.updatePuzzleDownload();
