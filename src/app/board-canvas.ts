@@ -24,6 +24,9 @@ export class BoardCanvas {
   render(board: Board): void {
     this.render_ctx.clearRect(0, 0, this.htmlCanvas.nativeElement.width, this.htmlCanvas.nativeElement.height);
 
+    this.render_ctx.strokeStyle = 'black';
+    this.render_ctx.lineWidth = 2;
+    this.render_ctx.strokeRect(this.gridOffset, this.gridOffset, board.width * this.cellSize, board.height * this.cellSize);
     for (let i = 0; i <= board.width; i++) {
       this.render_ctx.beginPath();
       this.render_ctx.strokeStyle = 'black';
@@ -126,6 +129,10 @@ export class BoardCanvas {
         }
       }
     }
+
+    this.render_ctx.strokeStyle = 'white';
+    this.render_ctx.lineWidth = 2;
+    this.render_ctx.strokeRect(this.gridOffset - 2, this.gridOffset - 2, board.width * this.cellSize + 4, board.height * this.cellSize + 4);
 
     if (board.selectV) {
       this.indicate(board.selectV.i, board.selectV.j, board.selectV.i, board.selectV.j + 1);

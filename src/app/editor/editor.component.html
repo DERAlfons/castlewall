@@ -1,5 +1,5 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Puzzle Editor</h1>
+  <h1 class="h3 mb-0 text-gray-800">Puzzle Editor</h1>
 </div>
 
 <div class="col">
@@ -8,31 +8,60 @@
   <div class="puzzle-editor">
     <canvas #canvasbg [width]="canvasWidth" [height]="canvasHeight"></canvas>
     <div class="hint-menu" *ngIf="menuActive" [style.left]="menuPositionX" [style.top]="menuPositionY">
-      <input type="radio" id="black" name="color" [(ngModel)]="editColor" value="black" />
-      <label for="black">Black</label>
-      <input type="radio" id="white" name="color" [(ngModel)]="editColor" value="white" />
-      <label for="white">White</label>
-      <input type="radio" id="grey" name="color" [(ngModel)]="editColor" value="grey" />
-      <label for="grey">Grey</label>
-      <input type="radio" id="nocolor" name="color" [(ngModel)]="editColor" value="nocolor" />
-      <label for="nocolor">None</label>
+      <input type="radio" name="color" id="black" [(ngModel)]="editColor" value="black" checked />
+      <label for="black">
+        <svg width="44" height="44">
+          <rect x="2" y="2" width="40" height="40" stroke="black" stroke-width="4" fill="black" />
+        </svg>
+      </label>
+      <input type="radio" name="color" id="white" [(ngModel)]="editColor" value="white" />
+      <label for="white">
+        <svg width="44" height="44">
+          <rect x="2" y="2" width="40" height="40" stroke="black" stroke-width="4" fill="white" />
+        </svg>
+      </label>
+      <input type="radio" name="color" id="grey" [(ngModel)]="editColor" value="grey" />
+      <label for="grey">
+        <svg width="44" height="44">
+          <rect x="2" y="2" width="40" height="40" stroke="black" stroke-width="4" fill="grey" />
+        </svg>
+      </label>
       <br>
       <input type="radio" name="direction" id="left" [(ngModel)]="editDirection" value="left" />
-      <label for="left">Left</label>
+      <label for="left">
+        <svg width="20" height="10">
+          <image href="assets/arrow_black.svg" width="20" height="10" transform="translate(20 10) rotate(180)"></image>
+        </svg>
+      </label>
       <input type="radio" name="direction" id="up" [(ngModel)]="editDirection" value="up" />
-      <label for="up">Up</label>
+      <label for="up">
+        <svg width="10" height="20">
+          <image href="assets/arrow_black.svg" width="20" height="10" transform="translate(0 20) rotate(-90)"></image>
+        </svg>
+      </label>
       <input type="radio" name="direction" id="right" [(ngModel)]="editDirection" value="right" />
-      <label for="right">Right</label>
+      <label for="right">
+        <svg width="20" height="10">
+          <image href="assets/arrow_black.svg" width="20" height="10"></image>
+        </svg>
+      </label>
       <input type="radio" name="direction" id="down" [(ngModel)]="editDirection" value="down" />
-      <label for="down">Down</label>
-      <input type="radio" name="direction" id="nodirection" [(ngModel)]="editDirection" value="nodirection" />
-      <label for="nodirection">None</label>
+      <label for="down">
+        <svg width="10" height="20">
+          <image href="assets/arrow_black.svg" width="20" height="10" transform="translate(10 0) rotate(90)"></image>
+        </svg>
+      </label>
+      <input type="radio" name="direction" id="nodirection" [(ngModel)]="editDirection" value="nodirection" checked />
+      <label for="nodirection">Empty</label>
       <br>
-      <input type="number" #walls id="walls" value="0" min="0" max="10" />
-      <label for="walls">Walls</label>
-      <br>
-      <button (click)="addHint(+walls.value)">Add</button>
-      <button (click)="closeHintMenu()">Cancel</button>
+      <div *ngIf="editDirection != 'nodirection'">
+        <input type="number" id="walls" min="0" max="10" [(ngModel)]="editWalls" />
+        <label for="walls">Walls</label>
+        <br>
+      </div>
+      <button class="btn btn-sm btn-success" (click)="addHint()">Add</button>
+      <button class="btn btn-sm btn-danger" (click)="deleteHint()">Delete</button>
+      <button class="btn btn-sm btn-secondary" (click)="closeHintMenu()">Cancel</button>
     </div>
   </div>
 </div>
