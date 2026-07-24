@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { Puzzle } from '../puzzle';
 import { PuzzleService } from '../puzzle.service';
@@ -7,6 +7,7 @@ import { PuzzleService } from '../puzzle.service';
     selector: 'app-puzzles',
     templateUrl: './puzzles.component.html',
     styleUrls: ['./puzzles.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class PuzzlesComponent implements OnInit {

@@ -1,5 +1,5 @@
 import { PuzzleService } from '../puzzle.service';
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
@@ -10,6 +10,7 @@ import { BoardCanvas } from '../board-canvas';
     selector: 'app-editor',
     templateUrl: './editor.component.html',
     styleUrls: ['./editor.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class EditorComponent implements OnInit {
