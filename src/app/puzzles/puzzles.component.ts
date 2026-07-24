@@ -4,9 +4,10 @@ import { Puzzle } from '../puzzle';
 import { PuzzleService } from '../puzzle.service';
 
 @Component({
-  selector: 'app-puzzles',
-  templateUrl: './puzzles.component.html',
-  styleUrls: ['./puzzles.component.css']
+    selector: 'app-puzzles',
+    templateUrl: './puzzles.component.html',
+    styleUrls: ['./puzzles.component.css'],
+    standalone: false
 })
 export class PuzzlesComponent implements OnInit {
 

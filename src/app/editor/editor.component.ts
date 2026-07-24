@@ -7,9 +7,10 @@ import { EditBoard } from '../edit-board';
 import { BoardCanvas } from '../board-canvas';
 
 @Component({
-  selector: 'app-editor',
-  templateUrl: './editor.component.html',
-  styleUrls: ['./editor.component.css']
+    selector: 'app-editor',
+    templateUrl: './editor.component.html',
+    styleUrls: ['./editor.component.css'],
+    standalone: false
 })
 export class EditorComponent implements OnInit {
 
