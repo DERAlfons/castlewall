@@ -3,142 +3,156 @@
 </div>
 
 <div class="col">
-<div class="card shadow h-100 py-2">
-<div class="card-body">
-  <div class="puzzle-editor">
-    <canvas #canvasbg [width]="canvasWidth" [height]="canvasHeight"></canvas>
-    <div class="hint-menu" *ngIf="menuActive" [style.left]="menuPositionX" [style.top]="menuPositionY">
-      <input type="radio" name="color" id="black" [(ngModel)]="editColor" value="black" checked />
-      <label for="black">
-        <svg width="44" height="44">
-          <rect x="2" y="2" width="40" height="40" stroke="black" stroke-width="4" fill="black" />
-        </svg>
-      </label>
-      <input type="radio" name="color" id="white" [(ngModel)]="editColor" value="white" />
-      <label for="white">
-        <svg width="44" height="44">
-          <rect x="2" y="2" width="40" height="40" stroke="black" stroke-width="4" fill="white" />
-        </svg>
-      </label>
-      <input type="radio" name="color" id="grey" [(ngModel)]="editColor" value="grey" />
-      <label for="grey">
-        <svg width="44" height="44">
-          <rect x="2" y="2" width="40" height="40" stroke="black" stroke-width="4" fill="grey" />
-        </svg>
-      </label>
-      <br>
-      <input type="radio" name="direction" id="left" [(ngModel)]="editDirection" value="left" />
-      <label for="left">
-        <svg width="20" height="10">
-          <image href="assets/arrow_black.svg" width="20" height="10" transform="translate(20 10) rotate(180)"></image>
-        </svg>
-      </label>
-      <input type="radio" name="direction" id="up" [(ngModel)]="editDirection" value="up" />
-      <label for="up">
-        <svg width="10" height="20">
-          <image href="assets/arrow_black.svg" width="20" height="10" transform="translate(0 20) rotate(-90)"></image>
-        </svg>
-      </label>
-      <input type="radio" name="direction" id="right" [(ngModel)]="editDirection" value="right" />
-      <label for="right">
-        <svg width="20" height="10">
-          <image href="assets/arrow_black.svg" width="20" height="10"></image>
-        </svg>
-      </label>
-      <input type="radio" name="direction" id="down" [(ngModel)]="editDirection" value="down" />
-      <label for="down">
-        <svg width="10" height="20">
-          <image href="assets/arrow_black.svg" width="20" height="10" transform="translate(10 0) rotate(90)"></image>
-        </svg>
-      </label>
-      <input type="radio" name="direction" id="nodirection" [(ngModel)]="editDirection" value="nodirection" checked />
-      <label for="nodirection">Empty</label>
-      <br>
-      <div *ngIf="editDirection != 'nodirection'">
-        <input type="number" id="walls" min="0" max="10" [(ngModel)]="editWalls" />
-        <label for="walls">Walls</label>
+  <div class="card shadow h-100 py-2">
+    <div class="card-body">
+      <div class="puzzle-editor">
+        <canvas #canvasbg [width]="canvasWidth" [height]="canvasHeight"></canvas>
+        @if (menuActive) {
+          <div class="hint-menu" [style.left]="menuPositionX" [style.top]="menuPositionY">
+            <input type="radio" name="color" id="black" [(ngModel)]="editColor" value="black" checked />
+            <label for="black">
+              <svg width="44" height="44">
+                <rect x="2" y="2" width="40" height="40" stroke="black" stroke-width="4" fill="black" />
+              </svg>
+            </label>
+            <input type="radio" name="color" id="white" [(ngModel)]="editColor" value="white" />
+            <label for="white">
+              <svg width="44" height="44">
+                <rect x="2" y="2" width="40" height="40" stroke="black" stroke-width="4" fill="white" />
+              </svg>
+            </label>
+            <input type="radio" name="color" id="grey" [(ngModel)]="editColor" value="grey" />
+            <label for="grey">
+              <svg width="44" height="44">
+                <rect x="2" y="2" width="40" height="40" stroke="black" stroke-width="4" fill="grey" />
+              </svg>
+            </label>
+            <br>
+              <input type="radio" name="direction" id="left" [(ngModel)]="editDirection" value="left" />
+              <label for="left">
+                <svg width="20" height="10">
+                  <image href="assets/arrow_black.svg" width="20" height="10" transform="translate(20 10) rotate(180)"></image>
+                </svg>
+              </label>
+              <input type="radio" name="direction" id="up" [(ngModel)]="editDirection" value="up" />
+              <label for="up">
+                <svg width="10" height="20">
+                  <image href="assets/arrow_black.svg" width="20" height="10" transform="translate(0 20) rotate(-90)"></image>
+                </svg>
+              </label>
+              <input type="radio" name="direction" id="right" [(ngModel)]="editDirection" value="right" />
+              <label for="right">
+                <svg width="20" height="10">
+                  <image href="assets/arrow_black.svg" width="20" height="10"></image>
+                </svg>
+              </label>
+              <input type="radio" name="direction" id="down" [(ngModel)]="editDirection" value="down" />
+              <label for="down">
+                <svg width="10" height="20">
+                  <image href="assets/arrow_black.svg" width="20" height="10" transform="translate(10 0) rotate(90)"></image>
+                </svg>
+              </label>
+              <input type="radio" name="direction" id="nodirection" [(ngModel)]="editDirection" value="nodirection" checked />
+              <label for="nodirection">Empty</label>
+              <br>
+                @if (editDirection != 'nodirection') {
+                  <div>
+                    <input type="number" id="walls" min="0" max="10" [(ngModel)]="editWalls" />
+                    <label for="walls">Walls</label>
+                    <br>
+                    </div>
+                  }
+                  <button class="btn btn-sm btn-success" (click)="addHint()">Add</button>
+                  <button class="btn btn-sm btn-danger" (click)="deleteHint()">Delete</button>
+                  <button class="btn btn-sm btn-secondary" (click)="closeHintMenu()">Cancel</button>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
         <br>
-      </div>
-      <button class="btn btn-sm btn-success" (click)="addHint()">Add</button>
-      <button class="btn btn-sm btn-danger" (click)="deleteHint()">Delete</button>
-      <button class="btn btn-sm btn-secondary" (click)="closeHintMenu()">Cancel</button>
-    </div>
-  </div>
-</div>
-</div>
-<br>
 
-<div class="row">
-<div class="col-xl-3 col-md-6 mb-4">
-<div class="card shadow h-100 py-2">
-<div class="card-body">
-  <table>
-    <tr>
-      <td><label for="title">Title</label></td>
-      <td><input #puzzleTitle id="title" value="" /></td>
-    </tr>
-    <tr>
-      <td><label for="width">Width</label></td>
-      <td><input type="number" id="width" [(ngModel)]="editWidth" value="10" min="2" (change)="updateWidth()" /></td>
-    </tr>
-    <tr>
-      <td><label for="height">Height</label></td>
-      <td><input type="number" id="height" [(ngModel)]="editHeight" value="10" min="2" (change)="updateHeight()" /></td>
-    </tr>
-  </table>
-</div>
-</div>
-</div>
+          <div class="row">
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card shadow h-100 py-2">
+                <div class="card-body">
+                  <table>
+                    <tr>
+                      <td><label for="title">Title</label></td>
+                      <td><input #puzzleTitle id="title" value="" /></td>
+                    </tr>
+                    <tr>
+                      <td><label for="width">Width</label></td>
+                      <td><input type="number" id="width" [(ngModel)]="editWidth" value="10" min="2" (change)="updateWidth()" /></td>
+                    </tr>
+                    <tr>
+                      <td><label for="height">Height</label></td>
+                      <td><input type="number" id="height" [(ngModel)]="editHeight" value="10" min="2" (change)="updateHeight()" /></td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
 
-<div class="col-xl-3 col-md-6 mb-4">
-<div class="card shadow h-100 py-2">
-<div class="card-body">
-  <button *ngIf="checkStatus == 'edit'" class="btn btn-icon-split btn-primary" (click)="add(puzzleTitle.value); puzzleTitle.value='';">
-    <span class="icon"><i class="fas fa-cloud-upload-alt"></i></span>
-    <span class="text">Upload Puzzle</span>
-  </button>
-  <button *ngIf="checkStatus == 'progress'" class="btn btn-icon-split btn-secondary">
-    <span class="icon"><i class="fas fa-spinner"></i></span>
-    <span class="text">Checking solvability of puzzle...</span>
-  </button>
-  <button *ngIf="checkStatus == 'unique'" class="btn btn-icon-split btn-success">
-    <span class="icon"><i class="fas fa-check"></i></span>
-    <span class="text">Puzzle has unique solution</span>
-  </button>
-  <button *ngIf="checkStatus == 'impossible'" class="btn btn-icon-split btn-danger">
-    <span class="icon"><i class="fas fa-times"></i></span>
-    <span class="text">Puzzle does not have a solution</span>
-  </button>
-  <button *ngIf="checkStatus == 'ambiguous'" class="btn btn-icon-split btn-danger">
-    <span class="icon"><i class="fas fa-times"></i></span>
-    <span class="text">Puzzle has multiple solutions</span>
-  </button>
-  <br><br>
-  <a class="btn btn-icon-split btn-primary" [href]="puzzleDownload" download="puzzle.json">
-    <span class="icon"><i class="fas fa-download"></i></span>
-    <span class="text">
-      Save Puzzle
-    </span>
-  </a>
-</div>
-</div>
-</div>
-</div>
-<br>
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card shadow h-100 py-2">
+                <div class="card-body">
+                  @if (checkStatus == 'edit') {
+                    <button class="btn btn-icon-split btn-primary" (click)="add(puzzleTitle.value); puzzleTitle.value='';">
+                      <span class="icon"><i class="fas fa-cloud-upload-alt"></i></span>
+                      <span class="text">Upload Puzzle</span>
+                    </button>
+                  }
+                  @if (checkStatus == 'progress') {
+                    <button class="btn btn-icon-split btn-secondary">
+                      <span class="icon"><i class="fas fa-spinner"></i></span>
+                      <span class="text">Checking solvability of puzzle...</span>
+                    </button>
+                  }
+                  @if (checkStatus == 'unique') {
+                    <button class="btn btn-icon-split btn-success">
+                      <span class="icon"><i class="fas fa-check"></i></span>
+                      <span class="text">Puzzle has unique solution</span>
+                    </button>
+                  }
+                  @if (checkStatus == 'impossible') {
+                    <button class="btn btn-icon-split btn-danger">
+                      <span class="icon"><i class="fas fa-times"></i></span>
+                      <span class="text">Puzzle does not have a solution</span>
+                    </button>
+                  }
+                  @if (checkStatus == 'ambiguous') {
+                    <button class="btn btn-icon-split btn-danger">
+                      <span class="icon"><i class="fas fa-times"></i></span>
+                      <span class="text">Puzzle has multiple solutions</span>
+                    </button>
+                  }
+                  <br><br>
+                  <a class="btn btn-icon-split btn-primary" [href]="puzzleDownload" download="puzzle.json">
+                    <span class="icon"><i class="fas fa-download"></i></span>
+                    <span class="text">
+                      Save Puzzle
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
 
-<div class="row">
-<div class="col-xl-3 col-md-6 mb-4">
-<div class="card shadow h-100 py-2">
-<div class="card-body">
-  <p>
-    To add a puzzle to the database, you need the secret database access code.
-    Otherwise, the solvability of the puzzle will still be checked,
-    but it will not be added to the database.
-  </p>
-  <p>Secret database access code:</p>
-  <input id="accessCode" [(ngModel)]="accessCode" value="" />
-</div>
-</div>
-</div>
-</div>
-</div>
+            <div class="row">
+              <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card shadow h-100 py-2">
+                  <div class="card-body">
+                    <p>
+                      To add a puzzle to the database, you need the secret database access code.
+                      Otherwise, the solvability of the puzzle will still be checked,
+                      but it will not be added to the database.
+                    </p>
+                    <p>Secret database access code:</p>
+                    <input id="accessCode" [(ngModel)]="accessCode" value="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
