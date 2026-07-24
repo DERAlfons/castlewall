@@ -14,5 +14,5 @@ export class AngularIntroComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  title: 'Castlewall';
+
 }

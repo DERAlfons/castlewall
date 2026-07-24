@@ -71,19 +71,20 @@ export class EditBoard extends Board {
     let hints: { hint: WallHint, position: Indices }[] = [];
     for (let i = 0; i < this.height; i++) {
       for (let j = 0; j < this.width; j++) {
-        if (this.cboard[i][j]) {
-          if (this.cboard[i][j].direction) {
-            hints.push({ hint: { color: this.cboard[i][j].color, direction: this.cboard[i][j].direction, walls: this.cboard[i][j].walls },
+        const cbij = this.cboard[i][j]
+        if (cbij !== null) {
+          if (cbij.direction) {
+            hints.push({ hint: { color: cbij.color, direction: cbij.direction, walls: cbij.walls },
                          position: { i: i, j: j } });
           }
           else {
-            hints.push({ hint: { color: this.cboard[i][j].color, direction: null, walls: null },
+            hints.push({ hint: { color: cbij.color, direction: null, walls: null },
                          position: { i: i, j: j } });
           }
         }
       }
     }
 
-    return { id: null, title: 'Editor Puzzle', s_representation: '?', width: this.width, height: this.height, hints: hints };
+    return { id: 0, title: 'Editor Puzzle', s_representation: '?', width: this.width, height: this.height, hints: hints };
   }
 }

@@ -12,7 +12,7 @@ import { PuzzleService } from '../puzzle.service';
 })
 export class PuzzlesComponent implements OnInit {
 
-  puzzles: Puzzle[];
+  puzzles: Puzzle[] = [];
 
   constructor(private puzzleService: PuzzleService) { }
 

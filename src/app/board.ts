@@ -6,12 +6,12 @@ export class Board {
   public width: number;
   public height: number;
 
-  public cboard: WallHint[][];
-  public vboard: string[][];
-  public hboard: string[][];
+  public cboard: (WallHint | null)[][];
+  public vboard: (string | null)[][];
+  public hboard: (string | null)[][];
 
-  public selectV: Indices = null;
-  public selectH: Indices = null;
+  public selectV: Indices | null = null;
+  public selectH: Indices | null = null;
 
   constructor(puzzle: Puzzle) {
     this.width = puzzle.width;
@@ -221,7 +221,7 @@ export class Board {
     return true;
   }
 
-  next_wall_post(p_post: Indices, c_post: Indices): Indices{
+  next_wall_post(p_post: Indices, c_post: Indices): Indices | null {
     if (c_post.i < this.height - 1 && c_post.i >= p_post.i && this.vboard[c_post.j][c_post.i] == 'wall') {
       return { i: c_post.i + 1, j: c_post.j };
     }
@@ -251,14 +251,14 @@ export class Board {
   check_in_out(): boolean {
     for (let i = 1; i < this.height - 1; i++) {
       for (let j = 1; j < this.width - 1; j++) {
-        if (this.cboard[i][j] && this.cboard[i][j].color != 'grey') {
+        if (this.cboard[i][j]?.color != 'grey') {
 
           var segment = transpose(this.hboard)[j - 1].slice(0, i);
 
-          if (this.cboard[i][j].color == 'black' && is_odd(count(segment, 'wall'))) {
+          if (this.cboard[i][j]?.color == 'black' && is_odd(count(segment, 'wall'))) {
             return false;
           }
-          else if (this.cboard[i][j].color == 'white' && is_even(count(segment, 'wall'))) {
+          else if (this.cboard[i][j]?.color == 'white' && is_even(count(segment, 'wall'))) {
             return false;
           }
         }
@@ -272,7 +272,7 @@ export class Board {
     for (let i = 0; i < this.height; i++) {
       for (let j = 0; j < this.width; j++) {
         if (this.cboard[i][j]) {
-          switch (this.cboard[i][j].direction) {
+          switch (this.cboard[i][j]?.direction) {
             case 'up':
               var segment = this.vboard[j].slice(0, i - 1);
               break;
@@ -290,7 +290,7 @@ export class Board {
               continue;
           }
 
-          if (this.cboard[i][j].walls == count(segment, 'wall')) {
+          if (this.cboard[i][j]?.walls == count(segment, 'wall')) {
             continue;
           }
           else {

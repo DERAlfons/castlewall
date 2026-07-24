@@ -1,11 +1,12 @@
 import { ElementRef } from '@angular/core';
 
 import { Board } from './board';
+import { WallHint } from './wall-hint';
 
 export class BoardCanvas {
 
   private htmlCanvas: ElementRef<HTMLCanvasElement>;
-  private render_ctx: CanvasRenderingContext2D;
+  private render_ctx: CanvasRenderingContext2D | null;
   private cellSize: number = 40;
   private gridOffset: number = 20;
   private arrow_black: HTMLImageElement;
@@ -22,6 +23,10 @@ export class BoardCanvas {
   }
 
   render(board: Board): void {
+    if (this.render_ctx === null) {
+      return
+    }
+
     this.render_ctx.clearRect(0, 0, this.htmlCanvas.nativeElement.width, this.htmlCanvas.nativeElement.height);
 
     this.render_ctx.strokeStyle = 'black';
@@ -48,12 +53,13 @@ export class BoardCanvas {
 
     for (let i = 0; i < board.height; i++) {
       for (let j = 0; j < board.width; j++) {
-        if (board.cboard[i][j]) {
-          this.render_ctx.fillStyle = board.cboard[i][j].color;
+        let cbij: WallHint | null = board.cboard[i][j]
+        if (cbij !== null) {
+          this.render_ctx.fillStyle = cbij.color;
           this.render_ctx.fillRect(this.gridOffset + j * this.cellSize, this.gridOffset + i * this.cellSize, this.cellSize, this.cellSize);
-          if (board.cboard[i][j].direction) {
+          if (cbij.direction) {
             let arrow: HTMLImageElement;
-            if (board.cboard[i][j].color == 'black') {
+            if (cbij.color == 'black') {
               this.render_ctx.fillStyle = 'white';
               arrow = this.arrow_white;
             }
@@ -62,12 +68,12 @@ export class BoardCanvas {
               arrow = this.arrow_black;
             }
             this.render_ctx.font = `${this.cellSize / 2}px Arial`;
-            let textMeasures = this.render_ctx.measureText(`${board.cboard[i][j].walls}`);
+            let textMeasures = this.render_ctx.measureText(`${cbij.walls}`);
             let textWidth = textMeasures.width;
             let textHeight = textMeasures.actualBoundingBoxAscent;
-            let textX: number;
-            let textY: number;
-            if (board.cboard[i][j].direction == 'right') {
+            let textX: number = 0;
+            let textY: number = 0;
+            if (cbij.direction == 'right') {
               let arrowWidth = this.cellSize / 2;
               let arrowHeight = this.cellSize / 4;
               let arrowX = Math.floor((this.cellSize - arrowWidth) / 2);
@@ -75,7 +81,7 @@ export class BoardCanvas {
               textX = Math.floor((this.cellSize - textWidth) / 2);
               textY = Math.floor((this.cellSize + arrowHeight + textHeight) / 2);
               this.drawRotated(arrow, this.gridOffset + j * this.cellSize + arrowX, this.gridOffset + i * this.cellSize + arrowY, arrowWidth, arrowHeight, 0);
-            } else if (board.cboard[i][j].direction == 'left') {
+            } else if (cbij.direction == 'left') {
               let arrowWidth = this.cellSize / 2;
               let arrowHeight = this.cellSize / 4;
               let arrowX = Math.floor((this.cellSize + arrowWidth) / 2);
@@ -83,7 +89,7 @@ export class BoardCanvas {
               textX = Math.floor((this.cellSize - textWidth) / 2);
               textY = Math.floor((this.cellSize + arrowHeight + textHeight) / 2);
               this.drawRotated(arrow, this.gridOffset + j * this.cellSize + arrowX, this.gridOffset + i * this.cellSize + arrowY, arrowWidth, arrowHeight, Math.PI);
-            } else if (board.cboard[i][j].direction == 'up') {
+            } else if (cbij.direction == 'up') {
               let arrowWidth = this.cellSize / 4;
               let arrowHeight = this.cellSize / 2;
               let arrowX = Math.floor((this.cellSize + textWidth - arrowWidth) / 2);
@@ -91,7 +97,7 @@ export class BoardCanvas {
               textX = Math.floor((this.cellSize - arrowWidth - textWidth) / 2);
               textY = Math.floor((this.cellSize + textHeight) / 2);
               this.drawRotated(arrow, this.gridOffset + j * this.cellSize + arrowX, this.gridOffset + i * this.cellSize + arrowY, arrowHeight, arrowWidth, -Math.PI / 2);
-            } else if (board.cboard[i][j].direction == 'down') {
+            } else if (cbij.direction == 'down') {
               let arrowWidth = this.cellSize / 4;
               let arrowHeight = this.cellSize / 2;
               let arrowX = Math.floor((this.cellSize + textWidth + arrowWidth) / 2);
@@ -100,7 +106,7 @@ export class BoardCanvas {
               textY = Math.floor((this.cellSize + textHeight) / 2);
               this.drawRotated(arrow, this.gridOffset + j * this.cellSize + arrowX, this.gridOffset + i * this.cellSize + arrowY, arrowHeight, arrowWidth, Math.PI / 2);
             }
-            this.render_ctx.fillText(`${board.cboard[i][j].walls}`, this.gridOffset + j * this.cellSize + textX, this.gridOffset + i * this.cellSize + textY);
+            this.render_ctx.fillText(`${cbij.walls}`, this.gridOffset + j * this.cellSize + textX, this.gridOffset + i * this.cellSize + textY);
           }
           this.render_ctx.strokeStyle = 'black';
           this.render_ctx.lineWidth = 4;
@@ -143,6 +149,10 @@ export class BoardCanvas {
   }
 
   drawRotated(image: HTMLImageElement, posX: number, posY: number, width: number, height: number, angle: number): void {
+    if (this.render_ctx === null) {
+      return
+    }
+
     this.render_ctx.save();
     this.render_ctx.translate(posX, posY);
     this.render_ctx.rotate(angle);
@@ -151,6 +161,10 @@ export class BoardCanvas {
   }
 
   connect(x1: number, y1: number, x2: number, y2: number): void {
+    if (this.render_ctx === null) {
+      return
+    }
+
     this.render_ctx.beginPath();
     this.render_ctx.strokeStyle = 'green';
     this.render_ctx.lineWidth = 2;
@@ -161,6 +175,10 @@ export class BoardCanvas {
   }
 
   block(x1: number, y1: number, x2: number, y2: number): void {
+    if (this.render_ctx === null) {
+      return
+    }
+
     this.render_ctx.beginPath();
     this.render_ctx.strokeStyle = 'grey';
     this.render_ctx.lineWidth = 2;
@@ -174,6 +192,10 @@ export class BoardCanvas {
   }
 
   indicate(x1: number, y1: number, x2: number, y2: number): void {
+    if (this.render_ctx === null) {
+      return
+    }
+
     this.render_ctx.beginPath();
     this.render_ctx.arc(this.gridOffset + (x1 + x2 + 1) / 2 * this.cellSize, this.gridOffset + (y1 + y2 + 1) / 2 * this.cellSize, this.cellSize / 4, 0, 2 * Math.PI);
     this.render_ctx.fillStyle = '#80808080';

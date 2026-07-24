@@ -25,6 +25,8 @@
     "zone.js": "~0.15.1"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "^22.0.8",
+    "@angular/build": "^22.0.8",
     "@angular/cli": "^22.0.8",
     "@angular/compiler-cli": "^22.0.8",
     "@types/jasmine": "~3.5.0",
@@ -33,13 +35,15 @@
     "istanbul-lib-instrument": "^6.0.3",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~5.0.0",
-    "karma": "~5.0.0",
-    "karma-chrome-launcher": "~3.1.0",
-    "karma-coverage-istanbul-reporter": "~3.0.2",
-    "karma-jasmine": "~4.0.0",
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
     "typescript": "~6.0.3"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.6.0": true,
+    "esbuild@0.28.1": true,
+    "lmdb@3.5.4": true,
+    "msgpackr-extract@3.0.4": true
   }
 }

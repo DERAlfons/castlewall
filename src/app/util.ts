@@ -4,7 +4,7 @@ export interface Indices {
 }
 
 export function transpose<T>(matrix: T[][]): T[][] {
-  let result = [];
+  let result: T[][] = [];
   for (let i = 0; i < matrix[0].length; i++) {
     result.push([]);
     for (let j = 0; j < matrix.length; j++) {

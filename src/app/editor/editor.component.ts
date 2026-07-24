@@ -16,25 +16,25 @@ import { BoardCanvas } from '../board-canvas';
 export class EditorComponent implements OnInit {
 
   @ViewChild('canvasbg', { static: true })
-  canvasbg: ElementRef<HTMLCanvasElement>;
+  canvasbg: ElementRef<HTMLCanvasElement> | null = null;
   canvasWidth: number = 800;
   canvasHeight: number = 640;
   checkStatus: string = 'edit';
-  accessCode: string;
+  accessCode: string = '';
   menuActive: boolean = false;
-  editPositionX: number;
-  editPositionY: number;
+  editPositionX: number = 0;
+  editPositionY: number = 0;
   menuPositionX: string = '0px';
   menuPositionY: string = '0px';
-  editWidth: string;
-  editHeight: string;
+  editWidth: string = '';
+  editHeight: string = '';
   editColor: string = 'black';
   editDirection: string = 'nodirection';
   editWalls: string = '0';
-  board: EditBoard = new EditBoard({ id: null, title: 'Editor', s_representation: '?', width: 10, height: 10, hints: [] });
-  puzzleDownload: SafeResourceUrl;
+  board: EditBoard = new EditBoard({ id: 0, title: 'Editor', s_representation: '?', width: 10, height: 10, hints: [] });
+  puzzleDownload: SafeResourceUrl | null = null;
 
-  private boardCanvas: BoardCanvas;
+  private boardCanvas: BoardCanvas | null = null;
   private cellSize: number = 40;
   private gridOffset: number = 20;
 
@@ -47,6 +47,9 @@ export class EditorComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.canvasbg === null) {
+      return
+    }
     this.boardCanvas = new BoardCanvas(this.canvasbg);
 
     const id = this.route.snapshot.paramMap.get('id');
@@ -55,18 +58,31 @@ export class EditorComponent implements OnInit {
       this.editHeight = String(this.board.height);
       this.canvasWidth = this.board.width * this.cellSize + 2 * this.gridOffset;
       this.canvasHeight = this.board.width * this.cellSize + 2 * this.gridOffset;
-      requestAnimationFrame(() => this.boardCanvas.render(this.board));
+      requestAnimationFrame(() => {
+        if (this.boardCanvas === null) {
+          return
+        }
+        this.boardCanvas.render(this.board)});
       this.canvasbg.nativeElement.addEventListener('mousedown', event => this.handleMousedown(event));
     }
     else {
       this.puzzleService.getPuzzle(+id).subscribe(puzzle => {
+        if (this.canvasbg === null) {
+          return
+        }
+
         this.board = new EditBoard(puzzle);
         this.updatePuzzleDownload();
         this.editWidth = String(this.board.width);
         this.editHeight = String(this.board.height);
         this.canvasWidth = this.board.width * this.cellSize + 2 * this.gridOffset;
         this.canvasHeight = this.board.height * this.cellSize + 2 * this.gridOffset;
-        requestAnimationFrame(() => this.boardCanvas.render(this.board));
+        requestAnimationFrame(() => {
+          if (this.boardCanvas === null) {
+            return
+          }
+
+          this.boardCanvas.render(this.board)});
         this.canvasbg.nativeElement.addEventListener('mousedown', event => this.handleMousedown(event));
       });
     }
@@ -79,14 +95,24 @@ export class EditorComponent implements OnInit {
   updateWidth(): void {
     this.board.updateWidth(+this.editWidth);
     this.canvasWidth = this.board.width * this.cellSize + 2 * this.gridOffset;
-    requestAnimationFrame(() => this.boardCanvas.render(this.board));
+    requestAnimationFrame(() => {
+      if (this.boardCanvas === null) {
+        return
+      }
+
+      this.boardCanvas.render(this.board)});
     this.updatePuzzleDownload();
   }
 
   updateHeight(): void {
     this.board.updateHeight(+this.editHeight);
     this.canvasHeight = this.board.height * this.cellSize + 2 * this.gridOffset;
-    requestAnimationFrame(() => this.boardCanvas.render(this.board));
+    requestAnimationFrame(() => {
+      if (this.boardCanvas === null) {
+        return
+      }
+
+      this.boardCanvas.render(this.board)});
     this.updatePuzzleDownload();
   }
 
@@ -97,11 +123,12 @@ export class EditorComponent implements OnInit {
     if (px >= 0 && px < this.board.width && py >= 0 && py < this.board.height) {
       this.editPositionX = px;
       this.editPositionY = py;
-      if (this.board.cboard[this.editPositionY][this.editPositionX]) {
-        this.editColor = this.board.cboard[this.editPositionY][this.editPositionX].color;
-        if (this.board.cboard[this.editPositionY][this.editPositionX].direction) {
-          this.editDirection = this.board.cboard[this.editPositionY][this.editPositionX].direction;
-          this.editWalls = String(this.board.cboard[this.editPositionY][this.editPositionX].walls);
+      const cbyx = this.board.cboard[this.editPositionY][this.editPositionX];
+      if (cbyx !== null) {
+        this.editColor = cbyx.color;
+        if (cbyx.direction) {
+          this.editDirection = cbyx.direction;
+          this.editWalls = String(cbyx.walls);
         }
         else {
           this.editDirection = 'nodirection';
@@ -120,6 +147,10 @@ export class EditorComponent implements OnInit {
   }
 
   addHint(): void {
+    if (this.boardCanvas === null) {
+      return
+    }
+
     console.log(`adding Hint: color=${this.editColor}, direction=${this.editDirection}, walls=${this.editWalls}`);
 
     if (this.editDirection && this.editDirection != 'nodirection') {
@@ -137,6 +168,10 @@ export class EditorComponent implements OnInit {
   }
 
   deleteHint(): void {
+    if (this.boardCanvas === null) {
+      return
+    }
+    
     this.board.cboard[this.editPositionY][this.editPositionX] = null;
 
     this.menuActive = false;

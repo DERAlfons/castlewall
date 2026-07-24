@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PuzzleService } from '../puzzle.service';
 import { Board } from '../board';
 import { BoardCanvas } from '../board-canvas';
+import { ReturnStatement } from '@angular/compiler';
 
 @Component({
     selector: 'app-board',
@@ -14,15 +15,15 @@ import { BoardCanvas } from '../board-canvas';
 })
 export class BoardComponent implements OnInit {
   @ViewChild('canvasbg', { static: true })
-  canvasbg: ElementRef<HTMLCanvasElement>;
+  canvasbg: ElementRef<HTMLCanvasElement> | null = null;
   canvasWidth: number = 800;
   canvasHeight: number = 640;
-  private boardCanvas: BoardCanvas;
+  private boardCanvas: BoardCanvas | null = null;
   private cellSize: number = 40;
   private gridOffset: number = 20;
 
-  private board: Board;
-  public puzzleId: number;
+  private board: Board | null = null;
+  public puzzleId: number = 0;
   public puzzleTitle: string = '';
 
   constructor(
@@ -31,16 +32,31 @@ export class BoardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    if (this.canvasbg === null) {
+      return
+    }
+
     this.boardCanvas = new BoardCanvas(this.canvasbg);
 
-    const id = +this.route.snapshot.paramMap.get('id');
-    this.puzzleId = id;
-    this.puzzleService.getPuzzle(id).subscribe(puzzle => {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.puzzleId = id === null ? 0 : +id;
+    this.puzzleService.getPuzzle(this.puzzleId).subscribe(puzzle => {
+      if (this.canvasbg === null) {
+        return
+      }
+
       this.puzzleTitle = puzzle.title;
       this.board = new Board(puzzle);
       this.canvasWidth = this.board.width * this.cellSize + 2 * this.gridOffset;
       this.canvasHeight = this.board.height * this.cellSize + 2 * this.gridOffset;
-      requestAnimationFrame(() => this.boardCanvas.render(this.board));
+      requestAnimationFrame(() => {
+        if (this.boardCanvas === null) {
+          return
+        }
+        if (this.board === null) {
+          return
+        }
+        this.boardCanvas.render(this.board)});
       this.canvasbg.nativeElement.addEventListener('contextmenu', event => event.preventDefault());
       this.canvasbg.nativeElement.addEventListener('mousedown', event => this.handleMousedown(event));
       this.canvasbg.nativeElement.addEventListener('mousemove', event => this.handleMousemove(event));
@@ -54,7 +70,15 @@ export class BoardComponent implements OnInit {
       this.board = new Board(JSON.parse(reader.result as string));
       this.canvasWidth = this.board.width * this.cellSize + 2 * this.gridOffset;
       this.canvasHeight = this.board.height * this.cellSize + 2 * this.gridOffset;
-      requestAnimationFrame(() => this.boardCanvas.render(this.board));
+      requestAnimationFrame(() => {
+        if (this.boardCanvas === null) {
+          return 
+        }
+        if (this.board === null) {
+          return
+        }
+
+        this.boardCanvas.render(this.board)});
     };
     reader.readAsText(puzzleFile);
   }
@@ -62,6 +86,13 @@ export class BoardComponent implements OnInit {
   loadWalls(wallsFile: File): void {
     let reader = new FileReader();
     reader.onload = (_) => {
+      if (this.boardCanvas === null) {
+        return
+      }
+      if (this.board === null) {
+        return
+      }
+
       this.createWalls(JSON.parse(reader.result as string));
       this.boardCanvas.render(this.board);
     };
@@ -69,6 +100,10 @@ export class BoardComponent implements OnInit {
   }
 
   createWalls(walls: { [wall: string]: number }): void {
+    if (this.board === null) {
+      return
+    }
+
     let height = 0;
     while (walls[`h_r${height}_c0`] !== undefined) {
       height += 1;
@@ -95,6 +130,10 @@ export class BoardComponent implements OnInit {
   }
 
   checkBtn(): void {
+    if (this.board === null) {
+      return
+    }
+
     if (this.board.check()) {
       alert('Your solution is correct :)');
     }
@@ -104,6 +143,13 @@ export class BoardComponent implements OnInit {
   }
 
   handleMousedown(event: MouseEvent): void {
+    if (this.board === null) {
+      return
+    }
+    if (this.boardCanvas === null) {
+      return
+    }
+
     let px = Math.floor((event.offsetX - this.gridOffset) / this.cellSize);
     let py = Math.floor((event.offsetY - this.gridOffset) / this.cellSize);
     let dx = (event.offsetX - this.gridOffset) % this.cellSize;
@@ -130,6 +176,13 @@ export class BoardComponent implements OnInit {
   }
 
   handleMousemove(event: MouseEvent): void {
+    if (this.board === null) {
+      return
+    }
+    if (this.boardCanvas === null) {
+      return
+    }
+
     let px = Math.floor((event.offsetX - this.gridOffset) / this.cellSize);
     let py = Math.floor((event.offsetY - this.gridOffset) / this.cellSize);
     let dx = (event.offsetX - this.gridOffset) % this.cellSize;
@@ -158,6 +211,13 @@ export class BoardComponent implements OnInit {
   }
 
   handleMouseleave(event: MouseEvent): void {
+    if (this.board === null) {
+      return
+    }
+    if (this.boardCanvas === null) {
+      return
+    }
+    
     this.board.setSelectV(-1, -1);
     this.boardCanvas.render(this.board);
   }

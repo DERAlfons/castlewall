@@ -1,5 +1,5 @@
 export interface WallHint {
   color: string;
-  direction: string;
-  walls: number;
+  direction: string | null;
+  walls: number | null;
 }
